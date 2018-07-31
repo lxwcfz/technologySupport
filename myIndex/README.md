@@ -1,6 +1,6 @@
-# technology-lxw
+# myindex
 
-> about webfront
+> tec
 
 ## Build Setup
 
