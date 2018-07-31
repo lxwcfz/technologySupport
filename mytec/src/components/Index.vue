@@ -4,7 +4,7 @@
         <Navigater/>
         <!--标题栏-->
         <Aside :partJS="partJS" :articleNumber="articleNum"/>
-        <!--正文-->
+        <!-- 正文 -->
         <Content :partJS="partJS" :articleNum="articleNum"/>
         <!--底部-->
         <Footer @tz="go" :partJs="partJS" :articleNum="articleNum"/>
@@ -16,25 +16,24 @@ import Navigater from '@/components/Navigater';
 import Aside from '@/components/Aside';
 import Content from '@/components/Content';
 import Footer from '@/components/Footer';
+import commonJS from '../commonJS/commonJS.js';
 
 import partJS from '../dataBase/articleJS.js';
 
 export default {
     name: 'Index',
+    mixins: [commonJS],
     components: {
         Navigater: Navigater,
         Aside: Aside,
         Content: Content,
         Footer: Footer
     },
+    created() {
+        // console.log(this.articleNum.nowMainTitle)
+    },
     watch: {
         '$route': 'mountNowNum'
-    },
-    created() {
-        // console.log(this.articleNum)
-    },
-    mounted() {
-        console.log('mounted')
     },
     computed: {
         articleNum() {
@@ -44,12 +43,15 @@ export default {
             }
         }
     },
-    data() {
+    data () {
         return {
             partJS: partJS
         }
     },
     methods: {
+        changeNowTitle() {
+
+        },
         go(e, prevNum, nextNum) {
             let next = parseInt(e.target.getAttribute('data-next'));
             if(next == -1 && prevNum == 'notExist') {
@@ -63,7 +65,9 @@ export default {
             }
         },
         mountNowNum() {
+            // console.log(this.articleNum.nowMainTitle)
             this.articleNum.nowMainTitle = parseInt(this.$route.params.nowMainTitle);
+            // console.log(this.articleNum.nowMainTitle)
         }
     }
 }
