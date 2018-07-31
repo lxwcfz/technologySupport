@@ -33,7 +33,9 @@ export default {
         // console.log(this.articleNum.nowMainTitle)
     },
     watch: {
-        '$route': 'mountNowNum'
+        '$route' (to,from) {
+            this.mountNowNum();
+        }
     },
     computed: {
         articleNum() {

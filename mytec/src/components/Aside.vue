@@ -22,7 +22,9 @@ export default {
         }
     },
     computed: {
-        articleNum: this.articleNumber
+        articleNum() {
+            return this.articleNumber
+        }
     }
 }
 </script>
