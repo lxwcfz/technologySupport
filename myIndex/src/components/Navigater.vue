@@ -48,6 +48,9 @@ nav{
     background: #20232a;
     z-index: 2;
     padding: 0 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 .nav_left{
     padding-left: 24px;
@@ -96,11 +99,6 @@ nav{
 @media screen and (max-width: 800px) and (min-width: 0px) {
     nav .nav_right,.desc{
         display: none;   
-    }
-    nav{
-        position: fixed;
-        top: 0;
-        left: 0;
     }
     .logo{
         width: 36px;

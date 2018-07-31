@@ -18,9 +18,11 @@ export default {
     },
     data () {
         return {
-            articles: this.partJS,
-            articleNum: this.articleNumber
+            articles: this.partJS
         }
+    },
+    computed: {
+        articleNum: this.articleNumber
     }
 }
 </script>

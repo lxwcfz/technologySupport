@@ -8,6 +8,10 @@ export default new Router({
 	routes: [
 		{
 			path: '/',
+			redirect: '/index/0/0'
+		},
+		{
+			path: '/index/:nowMainTitle/:nowTitle',
 			name: 'Index',
 			component: Index
 		}

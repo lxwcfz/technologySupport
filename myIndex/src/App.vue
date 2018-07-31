@@ -19,6 +19,7 @@ export default {
 	outline: none;
 	box-sizing: border-box;
 	list-style: none;
+	word-wrap: break-word;
 }
 button{
 	cursor: pointer;

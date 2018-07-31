@@ -6,8 +6,9 @@
                 <h2>{{ item.title }}</h2>
                 <div v-for="wave in item.content" :key="wave.text">
                     <p v-if="wave.text">{{ wave.text }}</p>
-                    <img v-if="wave.src" :src="wave.src">
-                    <code v-if="wave.code">{{ wave.code }}</code>
+                    <div class="codeImgContainer" v-if="wave.src">
+                        <img :src="wave.src">
+                    </div>
                 </div>
             </div>
         </article>
@@ -20,9 +21,15 @@ export default {
     props: ['partJS', 'articleNum'],
     data () {
         return {
-            content: this.partJS,
-            nowTitle: this.articleNum.nowTitle,
-            nowMainTitle: this.articleNum.nowMainTitle
+            content: this.partJS
+        }
+    },
+    computed: {
+        nowTitle() {
+            return this.articleNum.nowTitle
+        },
+        nowMainTitle() {
+            return this.articleNum.nowMainTitle
         }
     }
 }
@@ -35,7 +42,7 @@ export default {
 }
 content{
     width: 100%;
-    padding: 24px 24px 24px 224px; 
+    padding: 70px 24px 24px 224px; 
 }
 article{
     box-sizing: content-box;
@@ -53,13 +60,20 @@ h2{
     font-size: 20px;
     line-height: 36px;
 }
-img{
-    max-width: 100%;
+.codeImgContainer{
+    width: 100%;
+    overflow: auto;
+    box-shadow: 0 5px 5px 5px #d9e1e2;
+    margin: 12px 0;
+}
+.codeImgContainer img{
+    min-width: 100%;
 }
 p{
     color: #000;
     font-size: 14px;
     line-height: 24px;
+    text-indent: 24px;
 }
 @media screen and (max-width: 800px) and (min-width: 0px) {
     #content{

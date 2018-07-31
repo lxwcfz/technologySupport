@@ -14,9 +14,20 @@ export default {
     props: ['partJS', 'articleNum'],
     data () {
         return {
-            articles: this.partJS,
-            nowMainTitle: this.articleNum.nowMainTitle,
-            nowTitle: this.articleNum.nowTitle
+            articles: this.partJS
+        }
+    },
+    watch: {
+        '$route'(to, from){
+            console.log(this.nowMainTitle,this.nowTitle)
+        }
+    },
+    computed: {
+        nowTitle() {
+            return this.articleNum.nowTitle
+        },
+        nowMainTitle() {
+            return this.articleNum.nowMainTitle
         }
     }
 }

@@ -7,13 +7,11 @@ var partJS = [
 				content: [
 					{
 						text: '什么是生命周期',
-						src: require('@/assets/module.png'),
-						code: ``
+						src: require('@/assets/module.png')
 					},
 					{
 						text: '这个是生命周期',
-						src: '',
-						code: ``
+						src: require('@/assets/code1.png')
 					}
 				]
 			},
@@ -22,8 +20,7 @@ var partJS = [
 				content: [
 					{
 						text: '什么是生命周期',
-						src: '',
-						code: ``
+						src: ''
 					}
 				]
 			},
@@ -32,8 +29,43 @@ var partJS = [
 				content: [
 					{
 						text: '什么是生命周期',
-						src: '',
-						code: ``
+						src: ''
+					}
+				]
+			}
+		]
+	},
+	{
+		mainTitle: '页面构建2',
+		content: [
+			{
+				title: '生命周期',
+				content: [
+					{
+						text: '什么是生命周期',
+						src: require('@/assets/module.png')
+					},
+					{
+						text: '这个是生命周期',
+						src: require('@/assets/code1.png')
+					}
+				]
+			},
+			{
+				title: '页面构建',
+				content: [
+					{
+						text: '什么是生命周期',
+						src: ''
+					}
+				]
+			},
+			{
+				title: '事件处理',
+				content: [
+					{
+						text: '什么是生命周期',
+						src: ''
 					}
 				]
 			}
