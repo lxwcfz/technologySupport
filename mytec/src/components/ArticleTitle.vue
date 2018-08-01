@@ -1,8 +1,8 @@
 <template>
     <div class="article_title">
         <div v-for="(article,index) in articles" :key="article.mainTitle">
-            <h1 :class="index == nowMainTitle ? 'now' : 'notnow'">{{ article.mainTitle }}</h1>
-            <button v-for="(title,i) in article.content" :class="i == nowTitle && index == nowMainTitle ? 'now' : 'notnow'"  :key="title.title">· {{ title.title }}</button>
+            <h1 @click="toNowMainTitle($event)" :data-num="index" :class="index == nowMainTitle ? 'now' : 'notnow'">{{ article.mainTitle }}</h1>
+            <button @click="toNowTitle($event)" :data-num="i" v-for="(title,i) in article.content" :class="i == nowTitle && index == nowMainTitle ? 'now' : 'notnow'"  :key="title.title">· {{ title.title }}</button>
         </div>
     </div>
 </template>
@@ -17,17 +17,27 @@ export default {
             articles: this.partJS
         }
     },
-    watch: {
-        '$route'(to, from){
-            console.log(this.nowMainTitle,this.nowTitle)
-        }
-    },
+    // watch: {
+    //     '$route'(to, from){
+    //         console.log(this.nowMainTitle,this.nowTitle)
+    //     }
+    // },
     computed: {
         nowTitle() {
             return this.articleNum.nowTitle
         },
         nowMainTitle() {
             return this.articleNum.nowMainTitle
+        }
+    },
+    methods: {
+        toNowTitle(e) {
+            let num = e.target.getAttribute('num');
+            this.$emit('toNowTitle', num)
+        },
+        toNowMainTitle(e) {
+            let num = e.target.getAttribute('num');
+            this.$emit('toNowMainTitle', num);
         }
     }
 }
@@ -46,6 +56,10 @@ h1{
     width:100%;
     padding: 4px 10px;
     color: #fff;
+    cursor: pointer;
+}
+h1:hover{
+    color: skyblue;
 }
 
 button{

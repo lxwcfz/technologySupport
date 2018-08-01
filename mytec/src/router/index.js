@@ -8,12 +8,41 @@ export default new Router({
 	routes: [
 		{
 			path: '/',
-			redirect: '/index/0/0'
+			redirect: '/index/0'
 		},
 		{
-			path: '/index/:nowMainTitle/:nowTitle',
+			path: '/index/:nowMainTitle',
+			props: (route) => ({
+				nowMainTitle: route.params.nowMainTitle
+			}),
 			name: 'Index',
-			component: Index
+			component: Index,
+			children: [
+				{
+					path: '/index/html/:nowMainTitle',
+					props: (route) => ({
+						nowMainTitle: route.params.nowMainTitle
+					}),
+					name: 'html',
+					component: Index
+				},
+				{
+					path: '/index/css/:nowMainTitle',
+					props: (route) => ({
+						nowMainTitle: route.params.nowMainTitle
+					}),
+					name: 'css',
+					component: Index
+				},
+				{
+					path: '/index/js/:nowMainTitle',
+					props: (route) => ({
+						nowMainTitle: route.params.nowMainTitle
+					}),
+					name: 'js',
+					component: Index
+				}
+			]
 		}
 	]
 });

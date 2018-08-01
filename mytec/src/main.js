@@ -4,14 +4,17 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 import commonJS from './commonJS/commonJS.js';
+import store from './store/store.js';
 
 Vue.config.productionTip = false;
+
 
 /* eslint-disable no-new */
 new Vue({
 	el: '#app',
 	mixins: [commonJS],
 	router,
+	store,
 	components: { App },
 	template: '<App/>'
 });

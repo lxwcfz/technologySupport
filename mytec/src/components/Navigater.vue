@@ -8,7 +8,7 @@
                 <img src="../assets/btn_showTab.png">
             </button>
         </div>
-        <NavRight/>
+        <NavRight @toNav="toNav"/>
     </nav>
 </template>
 
@@ -29,8 +29,12 @@ export default {
     methods: {
         showAside() {
             this.isAsideShow = !this.isAsideShow;
+            console.log("!")
             document.getElementsByTagName("Aside")[0].className = this.isAsideShow == 
             true ? 'hideAside' : 'showAside';
+        },
+        toNav(e) {
+            this.$emit('toNav', e);
         }
     }
 }

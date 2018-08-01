@@ -16,27 +16,27 @@ export default {
             navList: [
                 {
                     id: 'indexPage',
-                    address: '/index',
+                    address: '/',
                     text: '首页'
                 },
                 {
                     id: 'htmlPage',
-                    address: '/html',
+                    address: '/index/html/0',
                     text: 'HTML'
                 },
                 {
                     id: 'cssPage',
-                    address: '/css',
+                    address: '/index/css/0',
                     text: 'CSS'
                 },
                 {
                     id: 'jsPage',
-                    address: '/javascript',
+                    address: '/index/js/0',
                     text: 'JavaScript'
                 },
                 {
                     id: 'myGithub',
-                    address: 'https://lxwcfz.github.io/',
+                    address: 'https://www.github.com/lxwcfz',
                     text: 'github'
                 }
             ]
@@ -45,7 +45,7 @@ export default {
     methods: {
         // 导航栏导航函数
         goTo(e) {
-            window.location.href = `/${e.currentTarget.dataAddress}`;
+            this.$emit('toNav', e);
         }
     }
 }

@@ -1,7 +1,7 @@
 <template>
     <aside class="aside" id="aside">
-    	<NavRight/>
-		<ArticleTitle :partJS="articles" :articleNum="articleNum"/>
+    	<NavRight @toNav="toNav"/>
+		<ArticleTitle @toNowTitle="toNowTitle" @toNowMainTitle="toNowMainTitle" :partJS="articles" :articleNum="articleNum"/>
 	</aside>
 </template>
 
@@ -24,6 +24,17 @@ export default {
     computed: {
         articleNum() {
             return this.articleNumber
+        }
+    },
+    methods: {
+        toNav(e) {
+            this.$emit('toNav', e);
+        },
+        toNowTitle(n) {
+            this.$emit('changeNowTitle', n)
+        },
+        toNowMainTitle(n) {
+            this.$emit('changeNowMainTitle', n);
         }
     }
 }
