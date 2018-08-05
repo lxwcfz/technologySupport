@@ -78,7 +78,7 @@ export default {
                     this.$store.commit('changeNowTitle', parseInt(title.getAttribute('data-num')));
                 };
             };
-            console.log(this.$store.state.nowTitle)
+            // console.log(this.$store.state.nowTitle)
         },
         changeNowTitle(e, num) {
             let nowMainTitle = parseInt(e.target.parentNode.childNodes[0].getAttribute('data-num'));
