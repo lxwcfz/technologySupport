@@ -30,8 +30,8 @@ export default {
         toNav(e) {
             this.$emit('toNav', e);
         },
-        toNowTitle(n) {
-            this.$emit('changeNowTitle', n)
+        toNowTitle(e, n) {
+            this.$emit('changeNowTitle', e, n);
         },
         toNowMainTitle(n) {
             this.$emit('changeNowMainTitle', n);

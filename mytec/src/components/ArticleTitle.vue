@@ -32,11 +32,11 @@ export default {
     },
     methods: {
         toNowTitle(e) {
-            let num = e.target.getAttribute('num');
-            this.$emit('toNowTitle', num)
+            let num = parseInt(e.target.getAttribute('data-num'));
+            this.$emit('toNowTitle', e, num)
         },
         toNowMainTitle(e) {
-            let num = e.target.getAttribute('num');
+            let num = e.target.getAttribute('data-num');
             this.$emit('toNowMainTitle', num);
         }
     }

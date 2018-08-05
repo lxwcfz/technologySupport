@@ -1,15 +1,22 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import partJS from '../dataBase/articleJS.js';
+import partHTML from '../dataBase/articleHTML.js';
+import partCSS from '../dataBase/articleCSS.js';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
-		content: 0
+		partJS,
+		partCSS,
+		partHTML,
+		nowTitle: 0
 	},
 	mutations: {
-		increment(state) {		//通过store.commit('increment')调用
-			state.count ++;		//store.state.count获取
+		changeNowTitle(state, num) {		//通过store.commit('increment')调用
+			state.nowTitle = parseInt(num);		//store.state.count获取
 		}
 	}
 });

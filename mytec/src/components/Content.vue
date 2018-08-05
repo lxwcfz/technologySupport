@@ -2,7 +2,7 @@
     <content id="content">
         <article>
             <h1>{{ content[nowMainTitle].mainTitle }}</h1>
-            <div v-for="item in content[nowMainTitle].content" :key="item.title">
+            <div :data-num="index" class="titleArr" v-for="(item,index) in content[nowMainTitle].content" :key="item.title">
                 <h2>{{ item.title }}</h2>
                 <div v-for="wave in item.content" :key="wave.text">
                     <p v-if="wave.text">{{ wave.text }}</p>

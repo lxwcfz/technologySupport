@@ -20,7 +20,7 @@ var partJS = [
 				content: [
 					{
 						text: '什么是生命周期',
-						src: ''
+						src: require('@/assets/module.png')
 					}
 				]
 			},
@@ -29,7 +29,7 @@ var partJS = [
 				content: [
 					{
 						text: '什么是生命周期',
-						src: ''
+						src: require('@/assets/code1.png')
 					}
 				]
 			}

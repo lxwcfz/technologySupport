@@ -18,9 +18,6 @@ import Content from '@/components/Content';
 import Footer from '@/components/Footer';
 import commonJS from '../commonJS/commonJS.js';
 
-import partJS from '../dataBase/articleJS.js';
-import partHTML from '../dataBase/articleHTML.js';
-import partCSS from '../dataBase/articleCSS.js';
 
 export default {
     name: 'Index',
@@ -33,7 +30,10 @@ export default {
         Footer: Footer
     },
     created() {
-        // console.log(this.partContent)
+        // console.log(this.$store.state)
+    },
+    mounted() {
+        window.addEventListener('scroll', this.windowScroll);
     },
     watch: {
         '$route' (to,from) {
@@ -55,24 +55,45 @@ export default {
             set(newValue) {
                 return newValue
             }
+        },
+        nowTitle() {
+            return this.$store.state.nowTitle
         }
     },
     data () {
         return {
             Content: {
-                partjs: partJS,
-                parthtml: partHTML,
-                partcss: partCSS
-            },
-            nowTitle: 0
+                partjs: this.$store.state.partJS,
+                parthtml: this.$store.state.partHTML,
+                partcss: this.$store.state.partCSS
+            }
         }
     },
     methods: {
-        changeNowTitle(num) {
-
+        windowScroll() {
+            let titles = document.querySelectorAll('.titleArr');
+            for(let title of titles) {
+                let offset = title.getBoundingClientRect().top;
+                if(offset > 0 && offset < 160) {
+                    this.$store.commit('changeNowTitle', parseInt(title.getAttribute('data-num')));
+                };
+            };
+            console.log(this.$store.state.nowTitle)
+        },
+        changeNowTitle(e, num) {
+            let nowMainTitle = parseInt(e.target.parentNode.childNodes[0].getAttribute('data-num'));
+            if(this.nowMainTitle !== nowMainTitle) {this.changeNowMainTitle(nowMainTitle)};
+            this.$store.commit('changeNowTitle', num);
+            let titleArr = document.querySelectorAll('.titleArr');
+            let nowTop;
+            nowTop = titleArr[num].offsetTop - 60;
+            this.toOffset(nowTop);
+            // console.log(this.$store.state.nowTitle)
         },
         changeNowMainTitle(num) {
-            
+            this.$store.commit('changeNowTitle', 0);
+            this.$router.push({path: `/index/${num}`});
+            this.toOffset(0);
         },
         // 导航栏
         toNav(e) {
@@ -92,13 +113,23 @@ export default {
             }else{
                 let res = this.articleNum.nowMainTitle + next;
                 this.$router.push({path: `/index/${res}`});
-                this.toTop();
+                this.toOffset(0);
             }
         },
-        toTop() {
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-            window.pageYOffset = 0;
+        toOffset(num) {
+            let i = 0;
+            let maxTop = document.body.offsetHeight - window.screen.height;
+            let top = document.documentElement.scrollTop || document.body.scrollTop || window.pageYOffset;
+            num = num > maxTop ? maxTop : num;
+            let step = (num - top)/50;
+            let timer = setInterval(function(){
+                top += step;
+                document.documentElement.scrollTop = top;
+                document.body.scrollTop = top;
+                document.pageYOffset = top;
+                i += 1;
+                if(i == 50) clearInterval(timer);
+            },10)
         },
         mountNowNum() {
             // console.log(this.articleNum.nowMainTitle)
