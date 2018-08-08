@@ -5,7 +5,7 @@
             <div :data-num="index" class="titleArr" v-for="(item,index) in content[nowMainTitle].content" :key="item.title">
                 <h2>{{ item.title }}</h2>
                 <div v-for="wave in item.content" :key="wave.text">
-                    <p v-if="wave.text">{{ wave.text }}</p>
+                    <p v-if="wave.text" v-html="wave.text"></p>
                     <div class="codeImgContainer" v-if="wave.src">
                         <img :src="wave.src">
                     </div>
@@ -19,12 +19,10 @@
 export default {
     name: 'Content',
     props: ['partJS', 'articleNum'],
-    data () {
-        return {
-            content: this.partJS
-        }
-    },
     computed: {
+        content() {
+            return this.partJS
+        },
         nowTitle() {
             return this.articleNum.nowTitle
         },
@@ -67,13 +65,18 @@ h2{
     margin: 12px 0;
 }
 .codeImgContainer img{
-    min-width: 100%;
+    max-width: 100%;
 }
 p{
     color: #000;
     font-size: 14px;
     line-height: 24px;
     text-indent: 24px;
+    margin: 10px 0;
+}
+.span{
+    font-size: 15px;
+    color: #4d7e84;
 }
 @media screen and (max-width: 800px) and (min-width: 0px) {
     #content{

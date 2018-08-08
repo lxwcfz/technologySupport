@@ -16,12 +16,10 @@ export default {
     	NavRight: NavRight,
     	ArticleTitle: ArticleTitle
     },
-    data () {
-        return {
-            articles: this.partJS
-        }
-    },
     computed: {
+        articles() {
+            return this.partJS
+        },
         articleNum() {
             return this.articleNumber
         }

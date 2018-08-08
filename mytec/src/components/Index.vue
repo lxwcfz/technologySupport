@@ -3,7 +3,8 @@
         <!--导航栏-->
         <Navigater @toNav="toNav" />
         <!--标题栏-->
-        <Aside @changeNowTitle="changeNowTitle" @changeNowMainTitle="changeNowMainTitle" @toNav="toNav" :partJS="partContent" :articleNumber="articleNum"/>
+        <Aside @changeNowTitle="changeNowTitle" @changeNowMainTitle="changeNowMainTitle" @toNav="toNav"
+         :partJS="partContent" :articleNumber="articleNum"/>
         <!-- 正文 -->
         <Content :partJS="partContent" :articleNum="articleNum"/>
         <!--底部-->
@@ -34,6 +35,7 @@ export default {
     },
     mounted() {
         window.addEventListener('scroll', this.windowScroll);
+        window.addEventListener('reload', this.toOffset(0));
     },
     watch: {
         '$route' (to,from) {
@@ -48,25 +50,11 @@ export default {
                 nowTitle: parseInt(this.nowTitle)
             }
         },
-        partContent: {
-            get() {
-                return this.Content.partjs
-            },
-            set(newValue) {
-                return newValue
-            }
-        },
         nowTitle() {
             return this.$store.state.nowTitle
-        }
-    },
-    data () {
-        return {
-            Content: {
-                partjs: this.$store.state.partJS,
-                parthtml: this.$store.state.partHTML,
-                partcss: this.$store.state.partCSS
-            }
+        },
+        partContent() {
+            return this.$store.state.partContent
         }
     },
     methods: {
@@ -92,7 +80,15 @@ export default {
         },
         changeNowMainTitle(num) {
             this.$store.commit('changeNowTitle', 0);
-            this.$router.push({path: `/index/${num}`});
+            this.skipToTop(num);
+        },
+        skipToTop(num) {
+             let name = this.$route.name;
+            if(name && name !== 'Index') {
+                this.$router.push({path: `/index/${name}/${num}`});
+            }else{
+                this.$router.push({path: `/index/${num}`});
+            };
             this.toOffset(0);
         },
         // 导航栏
@@ -101,6 +97,7 @@ export default {
                 window.location = e.target.getAttribute('data-address');
             }else{
                 this.$router.push({path: `${e.target.getAttribute('data-address')}`});
+                this.toOffset(0);
             };
         },
         // 上下文章连接按钮
@@ -112,8 +109,7 @@ export default {
 
             }else{
                 let res = this.articleNum.nowMainTitle + next;
-                this.$router.push({path: `/index/${res}`});
-                this.toOffset(0);
+                this.skipToTop(res)
             }
         },
         toOffset(num) {
@@ -138,8 +134,8 @@ export default {
         },
         updateContent() {
             let nowIndex = this.$route.name;
-            let nowContent = `part${nowIndex}`;
-            this.partContent = this.Content.nowContent;
+            let nowContent = `part${nowIndex.toUpperCase()}`;
+            this.$store.commit('changePartContent', nowContent);
         }
     }
 }

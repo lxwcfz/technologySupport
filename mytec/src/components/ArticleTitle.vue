@@ -12,17 +12,10 @@
 export default {
     name: 'ArticleTitle',
     props: ['partJS', 'articleNum'],
-    data () {
-        return {
-            articles: this.partJS
-        }
-    },
-    // watch: {
-    //     '$route'(to, from){
-    //         console.log(this.nowMainTitle,this.nowTitle)
-    //     }
-    // },
     computed: {
+        articles() {
+            return this.partJS
+        },
         nowTitle() {
             return this.articleNum.nowTitle
         },

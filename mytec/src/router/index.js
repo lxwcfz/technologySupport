@@ -8,7 +8,7 @@ export default new Router({
 	routes: [
 		{
 			path: '/',
-			redirect: '/index/0'
+			redirect: '/index/js/0'
 		},
 		{
 			path: '/index/:nowMainTitle',

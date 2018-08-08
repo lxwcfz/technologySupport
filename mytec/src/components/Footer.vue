@@ -19,12 +19,10 @@ export default {
         //     console.log(this.nowMainTitle)
         // }
     },
-    data () {
-        return {
-            partJS: this.partJs
-        }
-    },
     computed: {
+        partJS() {
+            return this.partJs
+        },
         nowMainTitle() {
             return parseInt(this.articleNum.nowMainTitle)
         },

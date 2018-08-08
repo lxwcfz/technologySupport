@@ -1,4 +1,4 @@
-var partJS = [
+var partHTML = [
 	{
 		mainTitle: '页面构建过程',
 		content: [
@@ -74,4 +74,4 @@ var partJS = [
 
 ];
 
-export default partJS;
+export default partHTML;

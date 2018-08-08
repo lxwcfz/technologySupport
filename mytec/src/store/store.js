@@ -12,11 +12,15 @@ export default new Vuex.Store({
 		partJS,
 		partCSS,
 		partHTML,
+		partContent: partJS,
 		nowTitle: 0
 	},
 	mutations: {
 		changeNowTitle(state, num) {		//通过store.commit('increment')调用
 			state.nowTitle = parseInt(num);		//store.state.count获取
+		},
+		changePartContent(state, nowPart) {
+			state.partContent = state[nowPart];
 		}
 	}
 });

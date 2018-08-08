@@ -29,7 +29,6 @@ export default {
     methods: {
         showAside() {
             this.isAsideShow = !this.isAsideShow;
-            console.log("!")
             document.getElementsByTagName("Aside")[0].className = this.isAsideShow == 
             true ? 'hideAside' : 'showAside';
         },
