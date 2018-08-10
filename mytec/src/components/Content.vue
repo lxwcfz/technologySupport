@@ -58,11 +58,12 @@ h2{
     font-size: 20px;
     line-height: 36px;
 }
-.codeImgContainer{
-    width: 100%;
+content .codeImgContainer{
+    max-width: 100%;
+    width: auto;
     overflow: auto;
     box-shadow: 0 5px 5px 5px #d9e1e2;
-    margin: 12px 0;
+    margin: 12px 0 12px 24px;
 }
 .codeImgContainer img{
     max-width: 100%;
@@ -71,7 +72,7 @@ p{
     color: #000;
     font-size: 14px;
     line-height: 24px;
-    text-indent: 24px;
+    padding-left: 24px;
     margin: 10px 0;
 }
 .span{

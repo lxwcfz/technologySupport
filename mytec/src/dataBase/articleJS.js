@@ -138,36 +138,200 @@ var partJS = [
 		]
 	},
 	{
-		mainTitle: '页面构建2',
+		mainTitle: '2、理解函数',
 		content: [
 			{
-				title: '生命周期',
+				title: '2.1函数式的不同点是什么',
 				content: [
 					{
-						text: '什么是生命周期',
-						src: require('@/assets/module.png')
+						text: `函数及函数式的概念之所以如此重要，其原因之一在于函数是程序执行过程中的主要模块单元，
+						我们编写的几乎所有的JavaScript代码都要在函数中执行。`
 					},
 					{
-						text: '这个是生命周期',
-						src: require('@/assets/codeJS1.1.png')
+						text: `<span style="font-size: 15px;color: #4d7e84;">2.1.1——函数是第一类对象</span><br/>
+						JavaScirpt中函数具有对象的所有能力，因此函数可被作为其他任意类型对象来对待。`,
+						src: require('@/assets/codeJS2.1.png')
+					},
+					{
+						text: `<span style="color: #ff5400;">函数也是对象</span>，不过他是可调用的，即被调用来完成某一
+						项动作。<br/>第一类对象的特点之一是，它能够作为参数传入函数。对于函数而言，这项特性也表明：如果我们
+						将某个函数当作参数传入另一个函数，传入函数会在应用程序执行的未来某个时间点来执行，即回调函数。`
+					},
+					{
+						text: `<span style="font-size: 15px;color: #4d7e84;">2.1.2——回调函数</span><br/>
+						每当我们建立了一个将在随后调用的函数，无论在事件处理阶段通过浏览器还是其他代码，我们都是在建立
+						一个回调（callback）。例如单机一次按钮，从服务端获取数据还是UI动画的一部分，都使用了回调。`,
+						src: require('@/assets/codeJS2.2.png')
+					},
+					{
+						text: `JavaScript的重要特征之一是可以在表达式出现的任意位置创建函数，这种方式不仅可以让代码更
+						紧凑和易于理解，当一个代码不会在多处调用的时候，该特性可以避免使用变量名来污染全局命名空间。`
+					},
+					{
+						text: `上述例子是我们自己调用自己的回调函数，浏览器也会调用回到函数，例如给body添加一个点击
+						事件，作为click事件的事件处理器，当事件发生的时候，就会被浏览器调用。<br/>
+						可能某些人会说回调函数是异步调用的，上述例子并不是回调函数，但我们在上面讲的就是未来某个时间点会
+						调用的回调函数。`
 					}
 				]
 			},
 			{
-				title: '页面构建',
+				title: '2.2函数作为对象的乐趣',
 				content: [
 					{
-						text: '什么是生命周期',
-						src: ''
+						text: `我们可以给函数添加属性<br/><span style="color: #ff5400;">var ninja = function
+						() {};</span><br/><span style="color: #ff5400;">ninja.name = 'xxx';</span>`
+					},
+					{
+						text: `<span style="font-size: 15px;color: #4d7e84;">2.2.1——存储函数</span><br/>
+						在某些例子中，我们需要管理某个事件发生后需要调用的回调函数集合，我们会存储元素唯一的函数集合。
+						当我们向这样的集合中添加函数时，哪个函数对于这个集合来说是新函数，哪个函数对于他来说是已经存在的
+						函数成为了两个我们需要考虑的问题。`,
+						src: require('@/assets/codeJS2.3.png')
+					},
+					{
+						text: `<span style="font-size: 15px;color: #4d7e84;">2.2.1——自记忆函数</span><br/>
+						记忆化是一种构建函数的处理过程，能够记住上次计算结果。当函数计算得到结果时就将结果按参数存储
+						起来。，如果另一个调用也使用相同的参数，我们就可以直接返回结果，而不是再计算一次。`,
+						src: require('@/assets/codeJS2.4.png')
+					},
+					{
+						text: `上述方法有两个优点：<br/><span style="font-size: 24px;">·</span> 函数调用时会寻找
+						之前调用产生的结果，所以用户会有很好的体验；<br/><span style="font-size: 24px;">·</span> 
+						它几乎是无缝地发生在后台，最终用户和页面作者都不需要执行任何请求，也不需要做初始化，就能顺利完成。`
 					}
 				]
 			},
 			{
-				title: '事件处理',
+				title: '2.3函数定义',
 				content: [
 					{
-						text: '什么是生命周期',
-						src: ''
+						text: `函数的定义方式总共有四类：<br/><span style="color: #ff5400;">函数定义和函数表达式
+						</span>——最常用的方式，<br/>function myFun () { return 1; }<br/>
+						<span style="color: #ff5400;">箭头函数</span>——ES6新增的JavaScript标准，能让我们尽量以简洁
+						的语法定义函数。<br/>myArg => myArg*2<br/><span style="color: #ff5400;">函数构造函数</span>
+						——不常使用的函数定义方法,让我们以字符串形式动态构造一个函数，这样的得到的函数是动态生成的<br/>
+						new myFun('a', 'b', 'return a + b;')<br/><span style="color: #ff5400;">生成器函数</span>
+						——ES6新增功能，能让我们创建不同于普通函数的函数，在应用执行过程中，这种函数能够退出再重新进入，
+						在这些再进入之间保留函数内变量的值。我们可以定义生成器版本的函数声明、函数表达式、函数构造函数。
+						<br/>function<span style="color: #ff5400;">*</span> myFun () { <span style="color: #ff5400;">
+						yield</span> 1; }`
+					},
+					{
+						text: `<span style="font-size: 15px;color: #4d7e84;">2.3.1函数声明和函数表达式</span>
+						<br/>他们之间有着微妙的区别。`
+					},
+					{
+						text: `<span style="color: #ff5400;">函数声明</span>——独立的JavaScript代码块<br/>
+						以强制性的function开头，其后紧跟着强制性的函数名，以及括号和括号内一列以逗号为间隔的可选参数。
+						函数体是一列可以为空的表达式，必须包含在花括号内。`
+					},
+					{
+						text: `特殊的在函数中定义函数的形式：`,
+						src: require('@/assets/codeJS2.5.png')
+					},
+					{
+						text: `让函数包含在另一个函数内可能会因为忽略作用域的标识符解析而引发一系列问题，我们在第四章
+						将会回顾这个问题`
+					},
+					{
+						text: `<span style="color: #ff5400;">函数表达式</span>——总是其他表达式的一部分的函数<br/>
+						var a= <span style="color: #ff5400;"></span>function() {}</span>;<br/>
+						myFun( <span style="color: #ff5400;"></span>function() {}</span> );`
+					},
+					{
+						text: `如下是函数声明与函数表达式的<span style="color: #ff5400;">不同点</span>：<br/>
+						函数声明是作为JavaScript代码中的独立表达式的，但它也能够包含在其他函数体内。而函数表达式
+						则是通常作为其他语句的一部分，被放在表达式级别，作为变量声明（赋值）的右值，或者作为
+						另一个函数调用的参数或者返回值。<br/>函数声明必须具有函数名，因为它是独立语句，有了名字才能被
+						调用而函数表达式不用，它可以被变量调用。`
+					},
+					{
+						text: `<span style="font-size: 15px;color: #4d7e84;">立即函数</span><br/>
+						<span style="color: #ff5400;">(function () {} ) (arg)</span><br/>
+						这种函数叫做（立即调用函数表达式IIFE），第十章会重点讨论IIFE，该特性可以模拟JavaScript中的
+						模块化。将函数表达式放在括号里可以让JavaScript解析器辨别出他是函数表达式而不是没有名字的
+						函数声明而产生错误。<br/>还可以通过一元运算符（+ - ！ ~）来调用IIFE。如<br/>
+						+function () {} ()...`
+					},
+					{
+						text: `<span style="font-size: 15px;color: #4d7e84;">2.3.1箭头函数</span><br/>
+						核心是：<span style="color: #ff5400;">=></span>，我们来看一个简单的箭头函数：`,
+						src: require('@/assets/codeJS2.6.png')
+					},
+					{
+						text: `这种写法不会出现function、return等关键字，非常简洁。箭头函数有两种定义方式：<br/>
+						<span style="font-size: 24px;">·</span> 当没有参数或者参数个数大于1的时候，=>前的
+						()一定要存在，但只有一个参数的时候可以省略括号；<br/>
+						<span style="font-size: 24px;">·</span> 当函数体只是一个表达式，可以省略大括号，且该表达式的值
+						就是函数返回值，需要时可以添加大括号包裹代码块，此时若没有return，则返回undefined。`
+					}
+				]
+			},
+			{
+				title: '2.4函数实参和形参',
+				content: [
+					{
+						text: `函数中经常讨论的<span style="color: #ff5400;">实参（argument）</span>和
+						<span style="color: #ff5400;">形参（paramter）</span>。形参就是我们定义函数时列举的变量，
+						实参就是我们调用函数时传入的变量值。`
+					},
+					{
+						text: `实参与形参是从前往后依次匹配，这样就会存在两种异常情况：<br/>
+						<span style="color: #ff5400;">形参数大于实参数</span>：则未被匹配到的形参为undefined；
+						<br/><span style="color: #ff5400;">实参数大于形参</span>：额外的实参不会被赋给任何形参，
+						在下一章，你将学会如何获取这些多余的实参。`
+					},
+					{
+						text: `<span style="font-size: 15px;color: #4d7e84;">2.4.1——剩余参数</span><br/>
+						我们来看一个例子`,
+						src: require('@/assets/codeJS2.7.png')
+					},
+					{
+						text: `上述的remainingNumbers是一个由剩余参数组成的数组，注意，只有最后一个形参才能作为剩余参数。`
+					},
+					{
+						text: `<span style="font-size: 15px;color: #4d7e84;">2.4.2——默认参数</span><br/>
+						再来看一个例子`,
+						src: require('@/assets/codeJS2.8.png')
+					},
+					{
+						text: `在ES6中，可以用另一种更简便的方法来实现默认参数<br/>
+						<span style="color: #ff5400;">function a(a, b = 'value')</span><br/>
+						默认参数b的默认值为value。可以为默认参数赋任何值，可以是数字、字符串、数组、对象甚至是函数，
+						后面的默认参数赋值时甚至可以使用前面的参数或者默认参数`,
+						src: require('@/assets/codeJS2.9.png')
+					}
+				]
+			},
+			{
+				title: '2.5本章小结',
+				content: [
+					{
+						text: `<span style="font-size: 24px;">·</span> 作为第一类对象，函数和其他JavaScript
+						对象一样，类似于其他对象，函数具有以下功能：<br/>1.通过字面量创建；<br/>
+						2.赋值给变量或者属性；<br/>3.作为函数参数传递；<br/>4.作为函数结果返回；<br/>
+						5.赋值给属性和方法。`
+					},
+					{
+						text: `<span style="font-size: 24px;">·</span> 回调函数是被代码随后“回来调用”的函数，
+						是一种很常见的函数，特别是在事件处理场景下。`
+					},
+					{
+						text: `<span style="font-size: 24px;">·</span> 函数具有属性，而且这些属性能够储存任何信息，
+						我们可以利用这个属性做很多事。<br/>可以在函数属性中存储另一个函数用于之后的引用和调用；<br/>
+						可以用函数属性创建一个缓存（记忆），用于减少不必要的计算。`
+					},
+					{
+						text: `<span style="font-size: 24px;">·</span> 很多种函数类型：函数声明、函数表达式、
+						构造函数、箭头函数和函数生成器。`
+					},
+					{
+						text: `<span style="font-size: 24px;">·</span> 函数的参数：<br/>
+						形参（paramter）和实参（argument）。`
+					},
+					{
+						text: `<span style="font-size: 24px;">·</span> 剩余参数和默认参数是JavaScript新特性。`
 					}
 				]
 			}

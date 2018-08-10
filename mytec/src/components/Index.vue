@@ -60,12 +60,19 @@ export default {
     methods: {
         windowScroll() {
             let titles = document.querySelectorAll('.titleArr');
+            let now = document.querySelectorAll('.now')[0];
+            let container = document.querySelectorAll('.aside')[0];
+            let offsetBottom = this.nowTitle > 0 ? titles[this.nowTitle - 1].getBoundingClientRect().bottom - 160 : 'x';
+            container.scrollTop = now.offsetTop;
             for(let title of titles) {
-                let offset = title.getBoundingClientRect().top;
-                if(offset > 0 && offset < 160) {
+                let offsetTop = title.getBoundingClientRect().top;
+                if(offsetTop > 0 && offsetTop < 160) {
                     this.$store.commit('changeNowTitle', parseInt(title.getAttribute('data-num')));
                 };
             };
+            if(offsetBottom > 0 && offsetBottom < 160) {
+                this.$store.commit('changeNowTitle', this.nowTitle - 1);
+            }
             // console.log(this.$store.state.nowTitle)
         },
         changeNowTitle(e, num) {
