@@ -36,6 +36,7 @@ export default {
     mounted() {
         window.addEventListener('scroll', this.windowScroll);
         window.addEventListener('reload', this.toOffset(0));
+        this.windowScroll();
     },
     watch: {
         '$route' (to,from) {
@@ -61,9 +62,9 @@ export default {
         windowScroll() {
             let titles = document.querySelectorAll('.titleArr');
             let now = document.querySelectorAll('.now')[0];
-            let container = document.querySelectorAll('.aside')[0];
-            let offsetBottom = this.nowTitle > 0 ? titles[this.nowTitle - 1].getBoundingClientRect().bottom - 160 : 'x';
-            container.scrollTop = now.offsetTop;
+            let container = document.getElementById('aside');
+            let offsetBottom = this.nowTitle > 0 ? titles[this.nowTitle - 1].getBoundingClientRect().bottom - 320 : 'x';
+            if(container.className !== 'hideAside') {container.scrollTop = now.offsetTop - 240};
             for(let title of titles) {
                 let offsetTop = title.getBoundingClientRect().top;
                 if(offsetTop > 0 && offsetTop < 160) {

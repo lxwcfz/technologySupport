@@ -61,13 +61,16 @@ section{
     width: 100%;
 }
 button{
-    font-size: 14px;
+    font-size: 20px;
     color: #1190b5;
-    max-width: 120px;
+    max-width: 40%;
 }
 @media screen and (max-width: 800px) and (min-width: 0) {
     .footer{
         padding: 0 20px 36px 20px;
+    }
+    section button{
+        font-size: 14px;
     }
 }
 </style>

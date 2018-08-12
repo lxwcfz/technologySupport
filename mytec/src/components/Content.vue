@@ -57,6 +57,7 @@ h2{
     color: #60888a;
     font-size: 20px;
     line-height: 36px;
+    background: #dfe6e6;
 }
 content .codeImgContainer{
     max-width: 100%;
@@ -67,6 +68,7 @@ content .codeImgContainer{
 }
 .codeImgContainer img{
     max-width: 100%;
+    border-radius: 5px;
 }
 p{
     color: #000;
