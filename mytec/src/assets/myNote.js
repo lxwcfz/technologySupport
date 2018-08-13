@@ -403,3 +403,126 @@ try{
  var imposter = {};
  imposter.getNum = ninja1.getNum;
  console.log(imposter.getNum === 1)	//true
+
+
+ //第五章
+ //丑陋的回调函数
+ getJSON('ninjas.json', function(err, ninjas) {		
+ 	if(err) {
+ 		console.log(err)
+ 		return;
+ 	}
+ 	getJSON(ninjas[0].missionsUrl, function(err, missions) {
+ 		if(err) {
+ 			console.log(err);
+ 			return;
+ 		}
+ 		getJSON(missions[0].detailsUrl, function(err, details) {
+ 			if(err) {
+ 				console.log(err);
+ 				return;
+ 			};
+ 			//do something
+ 		})
+ 	})
+ })
+
+ //generator promise
+async(function* () {	//function后面使用*号定义生成器
+	try {
+		const ninjas = yield getJSON('ninjas.json');	//关键字yield
+		const missions = yield getJSON(ninjas[0].missionsUrl);
+		const details = yield getJSON(missions[0].detailsUrl);
+		//do something
+	}
+	catch(e) {
+		console.log(e)
+	}
+})
+
+function* weaponGenerator() {
+	yield 'weapon1';	//yield生成独立的值
+	yield 'weapon2';
+	yield 'weapon3';
+}
+
+for ( let weapon of weaponGenerator() ) {	//使用新型循环方式for-of取出生成的值序列
+	console.log(weapon)
+}
+
+//
+function* WeaponGenerator() {
+	yield "weapon1";
+	yield "weapon2";
+}
+
+const weaponIterator = WeaponGenerator();	//调用生成器函数从而得到一个迭代器
+
+const result1 = weaponIterator.next();	//调用迭代器的next方法，请求一个新值
+console.log(typeof result === 'object')	//结果是一个具有value和done属性的对象
+console.log(result1.value == "weapon1")	//true
+console.log(result1.done == false)	//true,表示还没结束，还可以继续返回新值
+
+const result2 = weaponIterator.next();	//再次调用next方法
+console.log(typeof result2)	//'object'
+console.log(result2.value)	//'weapon2';
+console.log(result2.done)	//true
+
+const result3 = weaponIterator.next();
+console.log(typeof result2)	//'object'
+console.log(result2.value)	//undefined;
+console.log(result2.done)	//false	,不能再生成新值的时候状态就变false了
+
+//对迭代器进行迭代
+function* WeaponGenerator() {
+	yield "weapon1";
+	yield "weapon2";
+}
+
+const weaponIterator = WeaponGenerator();
+let item;
+while(!(item = weaponIterator.next()).done) {
+	console.log(item.value)
+}
+
+//委托执行权
+function* WeaponGenerator() {
+	yield 'weapon1';
+	yield* NinjaGenerator();
+	yield "weapon2"
+}
+
+function* NinjaGenerator() {
+	yield "ninja1";
+	yield "ninja2";
+}
+
+for(let item of WeaponGenerator()) {
+	console.log(item)	//依次输出weapon1、ninja1、ninja2、weapon2
+}
+
+//生成器生成ID序列
+function* IdGenerator() {
+	let id = 0;
+	while(1) {	//在普通函数中不能写无限循环函数，但是在生成器中可以
+		yield id ++;
+	}
+}
+const idGenerator = IdGenerator();
+const ninja1 = { id: idGenerator.next().value };	//1
+const ninja2 = { id: idGenerator.next().value };	//2
+const ninja3 = { id: idGenerator.next().value };	//3
+
+//参数与生成器交互
+function* NinjaGenerator(action) {
+	const imposter = yield ('hasaki' + action);
+	console.log(imposter === 'ninja')	//传递回来的值将作为yield表达式的返回值
+	yield (`haiya ${imposter} ${action}`)	//反引号``是ES6的新特性，可以直接拼接字符串和变量
+}
+const ninjaGenerator = NinjaGenerator('skulk');	//传入参数
+
+const result1 = ninjaGenerator.next();
+console.log(result1.value)	//hasaki skulk
+
+const result2 = ninjaGenerator.next('ninja');	//imposter为ninja	
+console.log(result2.value)	//haiya ninja skulk

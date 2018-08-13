@@ -55,7 +55,7 @@ h1{
 }
 h2{
     color: #60888a;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 36px;
     background: #dfe6e6;
 }
@@ -87,9 +87,6 @@ p{
     }
     #content h1{
         font-size: 22px;
-    }
-    #content h2{
-        font-size: 18px;
     }
 }
 content h1,content div,p,h2{

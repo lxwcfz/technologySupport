@@ -61,9 +61,13 @@ section{
     width: 100%;
 }
 button{
-    font-size: 20px;
+    font-size: 18px;
     color: #1190b5;
     max-width: 40%;
+    transition: background .5s ease;
+}
+button:hover{
+    background: #e5e8e8;
 }
 @media screen and (max-width: 800px) and (min-width: 0) {
     .footer{
