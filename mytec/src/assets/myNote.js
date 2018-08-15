@@ -526,3 +526,107 @@ console.log(result1.value)	//hasaki skulk
 
 const result2 = ninjaGenerator.next('ninja');	//imposter为ninja	
 console.log(result2.value)	//haiya ninja skulk
+
+//promise
+const ninjaPromise = new Promise((resolve, reject) => {
+	resolve('status ok');
+	//reject('found error')
+});
+
+ninjaPromise.then( data => {
+	console.log(data === 'status ok')	//承诺兑现后调用
+}, e => {
+	console.log('error')
+})
+
+//显式拒绝promise
+const promise = new Promise((resolve, reject) => {
+	reject('reject');
+});
+
+promise.then( () => {
+	console.log('success')
+}, error => {
+	console.log(error)
+})
+
+//链式调用catch方法
+const promise = new Promise((resolve, reject) => {
+	reject('reject');
+});
+
+promise.then(() => {
+	console.log('success')
+}).catch( error => {
+	console.log(error)
+})
+
+//异常隐式拒绝
+const promise = new Promise((resolve, reject) => {
+	a++;	//发生异常错误，a未定义
+});
+
+promise.then(() => {
+	console.log('success')
+}).catch(e => {
+	console.log(e)	//调用这个函数
+})
+
+//链式调用promise
+getJSON('data/ninjas.json').then(ninjas => {
+	getJSON(ninjas[0].missionsUrl)
+}).then(missions => {
+	getJSON(missions.detailsUrl)
+}).then(details => {
+	console.log(details)
+}).catch(err => {		//捕捉任何步骤中出现的错误
+	console.log(err)
+})
+
+//等待多个promise
+Promise.all([
+	getJSON('data/ninja1.json'),	//将任务放进数组
+	getJSON('data/ninja2.json'),
+	getJSON('data/ninja3.json')
+]).then(results => {	//获取的结果也是以数组形式展现
+	const ninja1 = results[0], ninja2 = results[1], ninja3 = results[2];
+	//do something
+}).catch(e => {
+	console.log(e)
+})
+
+//promise竞赛
+Promise.race([
+	getJSON('data/ninja1.json'),	//将任务放进数组
+	getJSON('data/ninja2.json'),
+	getJSON('data/ninja3.json')
+]).then(result => {
+	console.log('which one is' + result)
+}).catch(e => {
+	console.log(e)
+})
+
+
+//生成器和promise结合
+async(function* () {
+	try {
+		const ninjas = yield getJSON('data/ninjas.json');
+		const missions = yield getJSON(ninjas[0].missionsUrl);
+		//done
+	}
+	catch(e) {
+		console.log(e)
+	}
+})
+
+//async  await
+(async function() {
+	try {
+		const ninjas = await getJSON('data/ninjas.json');
+		const missions = await getJSON(ninjas[0].missionsUrl);
+		console.log(missions)
+	}
+	catch(e) {
+		const
+	}
+})

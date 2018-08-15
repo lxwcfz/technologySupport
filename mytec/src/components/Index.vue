@@ -78,13 +78,20 @@ export default {
         },
         changeNowTitle(e, num) {
             let nowMainTitle = parseInt(e.target.parentNode.childNodes[0].getAttribute('data-num'));
-            if(this.nowMainTitle !== nowMainTitle) {this.changeNowMainTitle(nowMainTitle)};
+            if(this.nowMainTitle !== nowMainTitle) {
+                this.changeNowMainTitle(nowMainTitle)
+                if(this.nowMainTitle == nowMainTitle) {this.changeNowTitleStep2(num)}
+            }else{
+                this.changeNowTitleStep2(num);
+            }
+            // console.log(this.$store.state.nowTitle)
+        },
+        changeNowTitleStep2(num) {
             this.$store.commit('changeNowTitle', num);
             let titleArr = document.querySelectorAll('.titleArr');
             let nowTop;
             nowTop = titleArr[num].offsetTop - 60;
             this.toOffset(nowTop);
-            // console.log(this.$store.state.nowTitle)
         },
         changeNowMainTitle(num) {
             this.$store.commit('changeNowTitle', 0);

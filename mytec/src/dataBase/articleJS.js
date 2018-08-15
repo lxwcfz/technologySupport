@@ -892,6 +892,111 @@ var partJS = [
 				title: '5.3使用promise',
 				content: [
 					{
+						text: `使用JavaScript编写代码会大量依赖异步计算，计算那些我们现在不需要，但是将来会用到的值，而promise
+						用于更简单的处理异步任务。`
+					},
+					{
+						text: `promise对象是一个占位符，他是对我们最终能够得知异步计算结果的一种保证。如果承诺兑现，那么就会得到一个值。
+						如果发生问题，结果就是一个错误，例如我们要从服务器获取数据：`,
+						src: require('@/assets/codeJS5.9.png')
+					},
+					{
+						text: `使用内置的构造函数Promise来创建一个promise需要传入一个函数（上例中的箭头函数），该函数被称为执行函数，
+						它包括两个参数（<span style="color: #ff5400;">resolve、reject</span>），我们可以手动调用resolve函数让
+						承诺兑现，也可以当错误发生时手动调用reject。`
+					},
+					{
+						text: `代码调用Promise对象内置的then方法，我们向这个方法中传入两个回调函数，一个成功的，一个失败的。
+						当承诺兑现时（我们调用了resolve方法），第一个回调函数就被调用，而当出现错误就会调用后一个回调函数（
+						可以是发生一个未处理的错误，也可以我们手动调用reject）`
+					},
+					{
+						text: `<span style="font-size: 15px;color: #4d7e84;">5.3.1——简单回调函数的问题</span><br/>
+						1、错误难以处理：一个长时间任务（如从服务器获取数据）很容易发生错误，而调用回调函数的代码和开始任务中的
+						这段代码一般不会位于事件循环的同一步骤（12章将会讲到事件循环），导致的结果就是错误会丢失。<br/>
+						在Node.js中，回调函数一般具有两个参数：err 和 data。当错误发生在某处时，err将会是一个非空的值。<br/>
+						2、执行连续步骤很困难：在我们结束了第一个长时间任务以后，我们需要利用获取到的数据进行某些操作，这样可能
+						又进入了一个长时间的过程（各步骤相互依赖），从而进入多层嵌套循环，代码变得难以理解和修改维护。`
+					},
+					{
+						text: `<span style="font-size: 15px;color: #4d7e84;">5.3.2——深入理解promise</span><br/>
+						promise对象在整个生命周期中，会经历多种状态：<br/>
+						从等待（<span style="color: #ff5400;">pending</span>）状态开始，因为我们此时对该对象一无所知，
+						所以也称为未实现（<span style="color: #ff5400;">unresolved</span>）,执行过程中，如果resolve被调用，
+						promise就会进入完成（<span style="color: #ff5400;">fulfilled</span>）状态，该状态下我们能够成功获取
+						承诺的值。<br/>另一方面，如果reject被调用，或者未处理的一个异常在调用过程中发生了，promise就会进入
+						拒绝状态，虽然我们无法获取承诺值，但是我们知道了其中的原因。<br/>
+						<span style="color: #ff5400;">注意：</span>一个promise对象一旦进入了fulfilled状态或者rejected状态，
+						就无法再切换了。`
+					},
+					{
+						text: `<span style="font-size: 15px;color: #4d7e84;">5.3.3——拒绝promise</span><br/>
+						有两种方式：显式拒绝（在promise中调用reject方法）和隐式拒绝（处理一个promise时抛出异常）`
+					},
+					{
+						text: `显式拒绝promise的例子：`,
+						src: require('@/assets/codeJS5.10.png')
+					},
+					{ 
+						text: `链式调用catch方法：`,
+						src: require('@/assets/codeJS5.11.png')
+					},
+					{
+						text: `异常隐式拒绝promise：`,
+						src: require("@/assets/codeJS5.12.png")
+					},
+					{
+						text: `<span style="font-size: 15px;color: #4d7e84;">5.3.4——链式调用promise</span><br/>
+						调用then方法以后还会再返回一个新的promise对象。`,
+						src: require('@/assets/codeJS5.13.png')
+					},
+					{
+						text: `<span style="font-size: 15px;color: #4d7e84;">5.3.5——等待多个promise</span><br/>
+						除了处理相互依赖的异步任务序列外，对于等待多个独立的异步任务，promise能够显著减少代码量，我们
+						看一个并行执行的例子（获取一系列独立的东西）：`,
+						src: require('@/assets/codeJS5.14.png')
+					},
+					{
+						text: `上述例子中，如果数组中的promise全部被解决，那么返回的promise就会被解决，如果有一个失败了，
+						则整个promise对象都会被拒绝。<br/>`
+					},
+					{
+						text: `<span style="font-size: 15px;color: #4d7e84;">5.3.5——个promise竞赛</span><br/>
+						下面我们看一个更加独立的promise，数组中的promise对象相互独立：`,
+						src: require('@/assets/codeJS5.15.png')
+					}
+				]
+			},
+			{
+				title: '5.4把生成器和promise结合',
+				content: [
+					{
+						text: `把异步任务放入一个生成器中，执行生成器函数。因为我们没办法知道承诺什么时候哦会兑现，
+						所以在生成器执行的时候，我们将让渡给生成器，从而不会阻塞。当承诺被兑现，我们继续通过迭代器的
+						next函数执行生成器，有需要就重复这个过程。`,
+						src: require('@/assets/codeJS5.16.png')
+					},
+					{
+						text: `<span style="color: #ff5400;">面向未来的async函数</span><br/>
+						当前的JavaScript标准增加了两个关键字：<span style="color: #ff5400;">async和await</span>。我们来看个例子：`,
+						src: require('@/assets/codeJS5.17.png')
+					},
+					{
+						text: `在function前面使用关键字async,可以表明当前的函数依赖一个异步返回的值。在每个调用异步任务的位置放置一个
+						await关键字。现阶段还没有浏览器支持，但你可以通过Babel或者Traceur转译代码来使用。`
+					}
+				]
+			}
+		]
+	},
+	//第六章
+	{
+		mainTitle: '6、深入研究对象',
+		content: [
+			{
+				title: '',
+				content: [
+					{
 						text: ``
 					}
 				]
