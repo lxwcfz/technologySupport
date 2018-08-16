@@ -627,6 +627,207 @@ async(function* () {
 		console.log(missions)
 	}
 	catch(e) {
-		const
+		console.log(e)
 	}
 })
+
+
+//第六章
+
+//Object.setPrototypeOf
+const objA = { a: true };
+const objB = { b: true };
+const objC = { c: true };
+
+console.log('a' in objA)	//true
+console.log('b' in objA)	//false
+Object.setPrototypeOf(objA, objB)	//将objB设置为objA的原型
+
+console.log('b' in objA)	//true
+console.log('c' in objB)	//false
+Object.setPrototypeOf(objB, objC)	//将C设置为B的原型
+
+console.log('c' in objB)	//true
+console.log('c' in objA)	//true
+
+//
+function Lxw() {};
+Lxw.prototype.ninja = function() {	//为函数LXW设置ninja原型对象
+	return true;
+}
+const lxw1 = Lxw();	//普通函数调用
+console.log(lxw1.ninja())	//undefined(无返回值)
+
+const lxw2 = new Lxw();	//构造器调用
+console.log(lxw2.ninja())	//true
+
+//实例属性
+function Lxw() {
+	this.ninja = true;
+	this.lxw = function() {
+		return this.ninja;
+	}
+}
+
+Lxw.prototype.lxw = function() {
+	return !this.ninja;
+}
+
+const tec = new Lxw();
+console.log( tec.lxw )	//true
+
+//动态改变原型属性
+function Lxw() {
+	this.ninja = true;
+}
+
+const lxw1 = new Lxw();
+Lxw.prototype.tec = function() {
+	return this.ninja;
+}
+console.log(lxw1.tec())	//true
+
+Lxw.prototype = {
+	vn: function() {
+		return false;
+	}
+}	//重写Lxw的prototype
+
+const lxw2 = new Lxw();
+console.log(lxw1.tec())	//true	保留原来的原型属性
+console.log(lxw2.vn())	//false	新的属性
+
+//constructor
+function Lxw() {};
+const lxw = new Lxw();
+lxw.constructor = Lxw;
+
+//用constructor创建新的对象
+function Lxw() {};
+const lxw1 = new Lxw();
+const lxw2 = new lxw1.constructor;
+
+
+//原型继承
+function Person() {};
+Person.prototype.dance = function() {};
+
+function Ninja() {};
+Ninja.prototype = {
+	dance: Person.prototype.dance
+};
+const ninja = new Ninja();
+
+//真正的继承
+function Person() {};
+Person.prototype.dance = function() {};
+
+function Ninja() {};
+Ninja.prototype = new Person();	//重点
+const ninja = new Ninja();
+console.log(ninja instanceof Person)	//true
+
+
+//Object.defineProperty
+const ninja = {
+	name: 'ninja'
+}
+Object.defineProperty(ninja, name, {
+	configurable: false,
+	enumerable: false,
+	value: true,
+	wrtiable: true
+})
+
+function Person() {};
+Person.prototype.dance = function() {};
+function Ninja() {};
+Ninja.prototype = new Person();
+Object.defineProperty(Ninja.prototype, 'constructor', {
+	enumerable: false,
+	value: Ninja,
+	wrtiable: true
+});
+const ninja = new Ninja();
+console.log(ninja.constructor === Ninja)	//true
+
+
+//class
+class Ninja {
+	constructor(name) {	//定义一个构造函数
+		this.name = name;
+	}
+	swing() {
+		return true;
+	}
+}
+
+const ninja = new Ninja('lxw');
+console.log(ninja.name === 'lxw');	//true
+console.log(ninja instanceof Ninja)	//true
+console.log(ninja.swing())			//true
+
+//还原class
+function Ninja(name) {
+	this.name = name;
+}
+Ninja.prototype.swing = function() {
+	return true;
+}
+
+const ninja = new Ninja('lxw');
+console.log(ninja.name === 'lxw');	//true
+console.log(ninja instanceof Ninja)	//true
+console.log(ninja.swing())			//true
+
+
+//static静态方法
+class Ninja {
+	constructor(name, level) {
+		this.name = name;
+		this.level = level;
+	}
+	swingSword() {
+		return true;
+	}
+	static compare(ninja1, ninja2) {
+		return ninja1.level - ninja2.level;
+	}
+}
+
+var ninja1 = new Ninja('ninja1', 2);
+var ninja2 = new Ninja('ninja2', 3);
+
+console.log('compare' in ninja1 || 'compare' in ninja2)	//false
+console.log(Ninja.compare(ninja1, ninja2) == -1)	//true
+console.log('swingSword' in Ninja)	//false
+
+
+//ES6中继承
+class Person {
+	constructor(name) {
+		this.name = name;
+	}
+
+	dance() {
+		return true;
+	}
+}
+
+class Ninja extends Person {	//使用关键字extends
+	constructor(name, weapon) {
+		super(name)				//使用super调用基类构造函数
+		this.weapon = weapon;
+	}
+	wieldWeapon() {
+		return true;
+	}
+}
+
+var person = new Person('Bob');
+console.log(person instanceof Person && person.dance() &&
+			person.name === 'Bob' && !('wieldWeapon' in person))	//true
+
+var ninja = new Ninja('job', 'gun');
+console.log(ninja instanceof Ninja && ninja.wieldWeapon() &&
+			ninja.name === 'job' && ninja.dance())					//true
