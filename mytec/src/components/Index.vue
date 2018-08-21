@@ -17,7 +17,7 @@ import Navigater from '@/components/Navigater';
 import Aside from '@/components/Aside';
 import Content from '@/components/Content';
 import Footer from '@/components/Footer';
-import commonJS from '../commonJS/commonJS.js';
+import commonJS from '../assets/commonJS/commonJS.js';
 
 
 export default {

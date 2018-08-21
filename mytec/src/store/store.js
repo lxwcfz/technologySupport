@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import partJS from '../dataBase/articleJS.js';
-import partHTML from '../dataBase/articleHTML.js';
-import partCSS from '../dataBase/articleCSS.js';
+import partJS from '../assets/dataBase/articleJS.js';
+import partHTML from '../assets/dataBase/articleHTML.js';
+import partCSS from '../assets/dataBase/articleCSS.js';
 
 Vue.use(Vuex);
 

@@ -831,3 +831,207 @@ console.log(person instanceof Person && person.dance() &&
 var ninja = new Ninja('job', 'gun');
 console.log(ninja instanceof Ninja && ninja.wieldWeapon() &&
 			ninja.name === 'job' && ninja.dance())					//true
+
+//第七章
+//getter和setter保护私有变量属性
+function Ninja() {
+	let skillLevel;
+	this.getLevel = () => skillLevel;
+
+	this.setLevel = value => {
+		skillLevel = value;
+	}
+};
+
+const ninja = new Ninja();
+ninja.setLevel(100);
+console.log(ninja.getLevel() === 100)	//true
+
+//对象字面量定义getter、setter
+const ninjaObj = {
+	ninjas: ['ninja1', 'ninja2', 'ninja3'],
+	get firstNinja() {
+		return this.ninjas[0];
+	},
+	set firstNinja(newValue) {
+		this.ninjas[0] = newValue;
+	}
+}
+console.log(ninjaObj.firstNinja === 'ninja1')	//true
+ninjaObj.firstNinja = 'vn';
+console.log(ninjaObj.firstNinja === 'vn')	//true
+
+
+//ES6中class定义getter和setter
+class NinjaObj {
+	constructor() {
+		this.ninjas = ['ninja1', 'ninja2', 'ninja3'];
+	}
+	get firstNinja() {
+		return this.ninjas[0];
+	}
+	set firstNinja(newValue) {
+		this.ninjas[0] = newValue;
+	}
+}
+
+const ninjaObj = new NinjaObj();
+console.log(ninjaObj.firstNinja === 'ninja1')	//true
+ninjaObj.firstNinja = 'vn';
+console.log(ninjaObj.firstNinja === 'vn');		//true
+
+
+//Object.defineProperty设置getter、setter
+function Ninja() {
+	let level = 0;
+	Object.defineProperty(this, 'myLevel', {
+		get: () => {
+			return level;
+		},
+		set: value => {
+			level = value;
+		} 
+	})
+}
+const ninja = new Ninja();
+console.log(typeof ninja.level === 'undefined')	//true
+console.log(ninja.myLevel === 0)	//true
+ninja.myLevel = 10;
+console.log(ninja.myLevel === 10)	//true
+
+//校验属性值
+function Ninja() {
+	let level = 0;
+	Object.defineProperty(this, 'myLevel', {
+		get: () => level,
+		set: value => {
+			if(!Number.isInteger(value)) {
+				throw new TypeError('level should be number');
+			}
+			level = value
+		}
+	});
+}
+
+const ninja = new Ninja();
+ninja.myLevel = 10;
+console.log(ninja.myLevel === 10)	//true
+try {
+	ninja.myLevel = '10';
+}
+catch(e) {
+	console.log(e)
+}
+
+
+//计算属性
+const shogun = {
+	name: 'ninja',
+	clan: 'ask',
+	get fullTitle() {
+		return this.name + ' ' + this.clan;
+	},
+	set fullTitle(value) {
+		const segments = value.split('');
+		this.name = segments[0];
+		this.clan = segments[1];
+	}
+}
+
+//通过Proxy构造器创建代理
+const emperor = {name: 'mike'};
+const representative = new Proxy(emperor, {
+	get: (target, key) => {
+		return key in target ? target[key] : 'do not bother emperor';
+	},
+	set: (target, key, value) => {
+		target[key] = value;
+	}
+})
+console.log(emperor.name, representative.name)	//mike mike
+console.log(emperor.nickname)	//undefined
+console.log(representative.nickname)	//do not bother empreor
+representative.nickname = 'bob';	//通过代理添加属性
+console.log(empreor.nickname)	//bob
+console.log(representative.nickname)	//bob
+
+
+//代理记录日志
+function makeLog(target) {
+	return new Proxy(target, {
+		get: (target, property) => {
+			return target[property];
+		},
+		set: (target, property, value) => {
+			target[property] = value;
+		}
+	});
+}
+
+let ninja = {name: 'vn'};
+ninja = makeLog(ninja)
+console.log(ninja.name === 'vn')	//true
+ninja.weapon = 'sword';
+
+//性能检测
+function isPrime(number) {
+	if(number < 2) {return false};
+	for(let i = 2; i < number; i ++) {
+		if(number % i === 0) { return false; }
+	}
+	return true;
+}
+
+isPrime = new Proxy(isPrime, {
+	apply: (target, thisArg, args) => {
+		console.time('isPrime');
+		const result = target.apply(thisArg, args);
+		console.timeEnd('isPrime');
+
+		return result;
+	}
+});
+
+isPrime(1213442);
+
+
+//自动填充
+function Folder() {
+	return new Proxy({}, {
+		get: (target, property) => {
+			if(!(property in target)) {
+				target[property] = new Folder();	//如果不具有则创建
+			}
+			return target[property]
+		}
+	})
+}
+const rootFolder = new Folder();
+try {
+	rootFolder.ninjasDir.firstNinjaDir.ninjaFile = 'ninja1.txt';	//不存在则创建
+	pass('pass')
+}
+catch(e) {
+	console.log(e)
+}
+
+
+//数组负索引
+function createNegativeArrayProxy(array) {
+	if(!Array.isArray(array)) {
+		console.log('please input a array');
+	}
+	return new Proxy(array, {
+		get: (target, index) => {
+			index = +index;		//将属性名变成数值
+			return target[index < 0 ? target.length + index : index]
+		},
+		set: (target, index, val) => {
+			index = +index;
+			return target[index < 0 ? target.length + index : index] = val;
+		}
+	});
+}
+
+const ninjas = ['ninja1', 'ninja2', 'ninja3'];
+const proxieNinjas = createNegativeArrayProxy(ninjas);
