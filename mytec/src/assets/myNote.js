@@ -1035,3 +1035,197 @@ function createNegativeArrayProxy(array) {
 
 const ninjas = ['ninja1', 'ninja2', 'ninja3'];
 const proxieNinjas = createNegativeArrayProxy(ninjas);
+
+
+//第八章
+//提取数组元素的属性
+const ninjas = [
+	{
+		name: 'ninja1',
+		weapon: 'weapon1'
+	},
+	{
+		name: 'ninja2',
+		weapon: 'weapon2'
+	},
+	{
+		name: 'ninja3',
+		weapon: 'weapon3'
+	}
+];
+
+const weapons = [];
+ninjas.forEach(ninja => {
+	weapons.push(ninja.weapon)
+});
+
+//every和some
+const ninjas = [
+	{
+		name: 'ninaj1',
+		weapon: 'weapon1'
+	},
+	{
+		name: 'ninaj2'
+	},
+	{
+		name: 'ninaj3',
+		weapon: 'weapon3'
+	}
+];
+const allNinjaNamed = ninjas.every(ninja => 'name' in ninja);	//false
+const someNinjaNamed = ninjas.some(ninja => 'name' in ninja);	//true
+
+//find
+const ninjas = [
+	{
+		name: 'ninaj1',
+		weapon: 'weapon1'
+	},
+	{
+		name: 'ninaj2'
+	},
+	{
+		name: 'ninaj3',
+		weapon: 'weapon3'
+	}
+];
+
+const ninjaWithWeapon3 = ninjas.find(ninja => {
+	return ninja.weapon === 'weapon3'	//返回具有该条件的数组元素
+});
+
+const armedNinjas = ninjas.filter(ninja => 'weapon' in ninja);	
+//filter来查找满足条件的多个元素
+
+//字母排序
+const ninjas = [{name: 'bbb'}, {name: 'abb'}, {name: 'bbc'}];
+
+ninjas.sort((ninja1, ninja2) => {
+	if(ninja1.name < ninja2.name) { return -1 };
+	if(ninja1.name > ninja2.name) { return 1 };
+	return 0;
+});
+console.log(ninjas)	//[{name: 'abb'}, {name: 'bbb'}, {name: 'bbc'}]
+
+
+//reduce
+const numbers = [1, 2, 3, 4];
+const sum = numbers.reduce((total, num) => total + num, 0);
+
+
+//复用数组方法
+const elems = {
+	length: 0,
+	add: function(elem) {
+		Array.prototype.push.call(this, elem);
+	},
+	gather: function(id) {
+		this.add(document.querySlectorAll(`#${id}`));
+	},
+	find: function(callback) {
+		return Array.prototype.find.call(this, callback);
+	}
+};
+
+elems.gather('idName')
+
+//Map
+const dictionary = {
+	'japan': {
+		'ninja': 'にんじゃ'
+	},
+	'chinese': {
+		'ninja': '忍者'
+	},
+	'korea': {
+		'ninja': '나루터'
+	}
+};
+console.log(dictionary.korea['ninja'] === '나루터')	//true
+
+//创建Map
+const ninjaMap = new Map();
+
+const ninja1 = {name: 'ninja1'};
+const ninja2 = {name: 'ninja2'};
+const ninja3 = {name: 'ninja3'};
+ninjaMap.set(ninja1, {home: 'home1'});	//通过Map的set方法建立两个ninja对象的映射关系
+ninjaMap.set(ninja2, {home: 'home2'});
+
+console.log(ninjaMap.get(ninja1).home === 'home1')	//true,通过get方法获取ninja对象
+console.log(ninjaMap.get(ninja2).home === 'home2')	//true
+
+console.log(ninjaMap.get(ninja3) === undefined)	//true,检测ninja3并未存在映射关系
+
+console.log(ninjaMap.size === 2)	//true,验证map中只存在前两个对象的映射关系
+
+console.log(ninjaMap.has(ninja1) && ninjaMap.has(ninja2))	//true,has方法验证map中是否存在指定的key
+
+ninjaMap.delete(ninja1)	//使用delete从map中删除key
+console.log(!ninjaMap.has(ninja1) && ninjaMap.size === 1)	//true
+
+ninjaMap.clear();	//完全清空map
+console.log(ninjaMap.size === 0)	//true
+
+//遍历map
+const directory = new Map();
+
+directory.set('ninja1', '111');	//分别给他们加上编号
+directory.set('ninja2', '222');
+directory.set('ninja3', '333');
+
+for(let item of directory) {
+	console.log(item[0] !== null)	//每个item有两个值：key(item[0]), value(item[1])
+	console.log(item[1] !== null)
+};
+
+for(let key of directory.keys()) {
+	console.log(key)	//使用内置的keys()方法遍历所有key
+}
+
+for(let value of directory.values()) {
+	console.log(value)	//使用内置的values()方法遍历所有value
+}
+
+
+//创建Set
+const ninjas = new Set(['ninja1', 'ninja2', 'ninja3', 'ninaj2']);	//接收一个数组进行初始化
+console.log(ninjas.has('ninja2'), ninjas.size === 3)	//丢弃重复项
+
+ninjas.add('ninja4');	//添加不存在的元素
+ninjas.add('ninja1');	//添加已经存在的元素将不起任何作用
+
+for(let ninja of ninjas) {
+	console.log(ninja)	//遍历Set集合
+}
+
+
+//并集
+const ninjas1 = ['ninja1-1', 'ninaj1-2', 'ninja3'];
+const ninjas2 = ['ninja2-1', 'ninaj2-2', 'ninja3'];
+
+const ninjas = new Set([...ninja1, ...ninja2]);
+
+console.log(ninjas.size === 5)	//true,ninja3元素是重复的
+
+
+//交集
+const ninjas1 = ['ninja1-1', 'ninaj1-2', 'ninja3'];
+const ninjas2 = ['ninja2-1', 'ninaj2-2', 'ninja3'];
+
+const ninjas = new Set(
+	[...ninja1].filter(ninja => ninja2.has(ninja))
+);
+console.log(ninjas.size === 1)	//只剩下相同的元素ninja3
+
+
+//差集
+const ninjas1 = ['ninja1-1', 'ninaj1-2', 'ninja3'];
+const ninjas2 = ['ninja2-1', 'ninaj2-2', 'ninja3'];
+
+cosnt ninjas = new Set(
+	[...ninja1].filter(ninja => !ninja2.has(ninja))
+);
+
+console.log(ninjas.size === 2)	//只剩下ninja1-1和ninja1-2

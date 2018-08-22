@@ -1269,6 +1269,214 @@ var partJS = [
 				title: '8.1数组',
 				content: [
 					{
+						text: `${blue}8.1.1——创建数组${endBlue}
+						创建数组有两种方法：<br/>
+						${point}使用内置的Array构造函数；<br/>
+						${point}使用数组字面量 []。<br/>
+						通过array.length可以获取数组的长度，通过索引值可以获取数组元素，若是索引值超出数组长度
+						（length-1），获取到的元素为undefined。若一个数组只有三个元素，通过array[3] = 'array4'
+						可以给数组添加第四个元素，同时也扩展了数组长度。还可以通过array.length = 2来切割数组，
+						保留前两个数组元素。`
+					},
+					{
+						text: `使用数组字面量创建数组优于使用内置Array构造函数创建，因为数组字面量不仅简洁，
+						而且由于JavaScript的高度动态特性，无法阻止修改内置的Array构造函数，也就意味着new Array()
+						创建的不一定是数组，所以推荐坚持使用字面量来创建。`
+					},
+					{
+						text: `访问超出数组长度的元素会返回undefined，则说明了${orange}JavaScript的数组是对象
+						${endOrange}`
+					},
+					{
+						text: `我们可以手动修改length属性，将length改为比原来大的值，数组会被扩展，新扩展的元素为
+						undefined，比原来小的值则会裁减数组。`
+					},
+					{
+						text: `${blue}8.1.2——数组添加、删除元素${endBlue}
+						${point}${orange}push${endOrange}:在数组末尾添加元素；<br/>
+						${point}${orange}unshift${endOrange}:在数组头部添加元素；<br/>
+						${point}${orange}shift${endOrange}:从数组头部删除元素；<br/>
+						${point}${orange}pop${endOrange}:从数组末尾删除元素。<br/>`
+					},
+					{
+						text: `性能考虑：pop和push都只影响数组最后一个元素，而shift和unshift是修改第一个元素，
+						之后的所有元素都会进行调整，因此push和pop速度更快。`
+					},
+					{
+						text: `${blue}8.1.3——任意位置添加删除元素${endBlue}
+						我们可以使用${orange}delete操作符${endOrange}来删除数组任意位置的元素，如delete array[2]；
+						可以删除数组的第三个元素，但是此时数组的长度并没有改变，第三个元素只是变成了undefined，
+						所以该方法并没有真正删除了数组元素。`
+					},
+					{
+						text: `要想真正实现删除、添加数组元素，JavaScript提供了一个${orange}splice方法${endOrange},
+						${orange}使用splice${endOrange}：<br/>
+						array.splice(start, howmany, item...);起始索引值start（必需）规定了从什么位置开始删除
+						或者添加元素，howmany规定了删除多少个元素（必须是数字，可以是0），如果没有传入，则会一直删除
+						到数组末尾，item则是需要添加的数组元素，用,分隔开依次传入。`
+					},
+					{
+						text: `${blue}8.1.4——数组常用操作${endBlue}
+						${point}遍历数组;<br/>
+						${point}基于现有的数组元素映射创建新数组;<br/>
+						${point}验证数组元素是否匹配指定的条件;<br/>
+						${point}查找数组特定元素;<br/>
+						${point}聚合数组，基于数组元素计算（如计算数组元素之和）;<br/>`
+					},
+					{
+						text: `${blue}数组遍历${endBlue}
+						我们最开始是使用for循环索引值递增的方式进行遍历，该过程需要考虑起始索引、数组长度、计步器，
+						确保不超出数组长度前提下能够遍历所有元素，为了简化该过程我们可以采用内置的
+						${orange}forEach方法${endOrange}：<br/>
+						array.forEach(item => { console.log(item) })。`
+					},
+					{
+						text: `${blue}映射数组${endBlue}
+						假设一个数组对象ninjas，每个ninja都有name和weapon属性，需要从这个数组中提取全部的weapon，
+						我们可能会想到这种方法：`,
+						src: require('@/assets/codeJS8.1.png')
+					},
+					{
+						text: `${orange}采用映射数组的方式map方法${endOrange}<br/>
+						只需要一条语句便可实现上例中的要求：<br/>
+						const weapons = ninjas.map( ninja => ninja.weapon)`
+					},
+					{
+						text: `${blue}测试数组元素${endBlue}
+						处理某些集合的元素时，我们需要知道数组的全部元素或者部分元素是否满足某些特定的条件，
+						JavaScript给我们提供了内置的${orange}every和some${endOrange}。`,
+						src: require('@/assets/codeJS8.2.png')
+					},
+					{
+						text: `使用every方法，只有全部元素都返回true，才能返回true，而some方法，只要有一个元素满足
+						条件返回true，就能返回true。`
+					},
+					{
+						text: `${blue}数组查找${endBlue}
+						我们可以使用内置的${orange}find${endOrange}方法查找指定的元素。`,
+						src: require('@/assets/codeJS8.3.png')
+					},
+					{
+						text: `find返回单个数组元素，filter返回一个新的数组，元素为满足条件的所有原数组元素。`
+					},
+					{
+						text: `查找数组索引：可以使用${orange}array.indexOf('item')${endOrange}查找指定元素的索引值，
+						${orange}array.lastIndexOf('item')${endOrange}查找多个元素最后出现的位置，
+						${orange}array.findIndex(item => item === 'item')${endOrange}查找元素的位置。`
+					},
+					{
+						text: `${blue}数组排序${endBlue}
+						首先，数组具有${orange}sort方法${endOrange}：给其传入一个回调函数<br/>
+						array.sort((a, b) => a - b );该方法会产生以下几种结果：<br/>
+						${point}结果<0，则a元素出现在b元素之前<br/>
+						${point}结果=0，则元素a和元素b出现在相同位置（位置不变）<br/>
+						${point}结果<0，则a元素出现在b元素之后<br/>`
+					},
+					{
+						text: `我们也可以通过sort来将字母进行排序：`,
+						src: require('@/assets/codeJS8.4.png')
+					},
+					{
+						text: `${blue}合计数组元素${endBlue}
+						使用${endOrange}reduce${endOrange}方法进行数组求和：`,
+						src: require('@/assets/codeJS8.5.png')
+					},
+					{
+						text: `${blue}8.1.5——复用内置的数组函数${endBlue}
+						有时，我们想要创建一个对象，该对象包含一组数据。如果仅仅是集合，我们可以使用数组，但有时我们需要
+						存储更多状态，就需要存储更多集合有关的元数据。让我们看看如何使用简单对象，并加上我们需要的方法。
+						处理集合的方法在Array对象上，如何引入到我们自己的对象上呢？`,
+						src: require('@/assets/codeJS8.6.png')
+					},
+					{
+						text: `上例中，我们创建对象，并模拟一些数组的行为，首相定义length属性用于存放元素的数量，
+						与数组类似。然后定义在末尾添加元素的add方法（类似于数组的push）。通常，Array.prototype.push
+						方法通过自身函数的上下文执行数组。但是我们使用call方法，将上下文改成我们定义的对象。
+						push方法添加length属性，为所添加的元素增加编号。add方法接收一个待添加到对象中的元素作为参数，
+						有时可能没有类似的元素，因此我们又添加了gather方法，通过ID查找元素并添加到对象中。最后，
+						利用内置的find实现自定义的find方法啊，用于查找对象中的任意元素。`
+					}
+				]
+			},
+			{
+				title: '8.2Map',
+				content: [
+					{
+						text: `假设你需要为一个网站创建多种语言，这种集合，将key映射到指定位置上，成为
+						${orange}字典或者Map${endOrange}。在JavaScript中可以利用对象是属性名和属性值的特性，
+						创建如下字典：`,
+						src: require('@/assets/codeJS8.7.png')
+					},
+					{
+						text: `上述例子看似很不错，但是通常来说并不可靠。`
+					},
+					{
+						text: `${blue}8.2.1——别把对象当作Map${endBlue}
+						由于可以通过原型访问未显式定义的对象属性，所以对象并非是最佳的Map，同时，对象的key只能是字符串，
+						如果想映射成其他类型，它会默默转换为字符串。所以对象并不应该作为Map。`
+					},
+					{
+						text: `${blue}8.2.2——创建Map${endBlue}
+						使用内置的Map构造函数：`,
+						src: require('@/assets/codeJS8.8.png')
+					},
+					{
+						text: `map是键值对的集合，key可以是任意类型的值，甚至可以是对象。<br/>
+						有时候，虽然两个有映射关系的key其值是相同的（如firstLink = window.location.href;
+						secondLink = window.location.href），即两个对象的值相同，但这两个对象并不相等。`
+					},
+					{
+						text: `${blue}8.2.3——遍历map${endBlue}
+						因为map是集合，所以可以使用forof循环遍历map，也可以保证遍历的顺序与插入顺序一致，
+						而在对象上使用forof循环则不能保证。`,
+						src: require('@/assets/codeJS8.9.png')
+					}
+				]
+			},
+			{
+				title: '8.3Set',
+				content: [
+					{
+						text: `在许多实际问题中，我们必须处理一种集合，集合中每个元素都是唯一的，这种集合成为set。
+						ES6中引入了一中全新的集合类型：Set。`
+					},
+					{
+						text: `${blue}8.3.1——创建Set${endBlue}
+						我们使用构造函数创建Set：`,
+						src: require('@/assets/codeJS8.10.png')
+					},
+					{
+						text: `Set具有多个可访问的方法：${orange}has, add${endOrange}以及属性
+						${orange}size${endOrange}。`
+					},
+					{
+						text: `${blue}8.3.2——并集${endBlue}
+						两个集合的并集指的是创建一个新的集合，同时包含两个集合中的所有元素，当然，
+						也不允许存在相同的元素两次。我们来看一个例子：`,
+						src: require('@/assets/codeJS8.11.png')
+					},
+					{
+						text: `${blue}8.3.3——交集${endBlue}
+						交集是新创建一个集合只包含两个集合中重复出现的元素：`,
+						src: require('@/assets/codeJS8.12.png')
+					},
+					{
+						text: `${blue}8.3.4——差集${endBlue}
+						差集是创建一个新的集合，只包含存在集合A中而不存在与集合B的元素。`,
+						src: require('@/assets/codeJS8.13.png')
+					}
+				]
+			}
+		]
+	},
+	//第九章
+	{
+		mainTitle: '9、正则表达式',
+		content: [
+			{
+				title: '9.1为什么需要正则表达式',
+				content: [
+					{
 						text: ``
 					}
 				]
