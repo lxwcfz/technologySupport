@@ -1224,8 +1224,176 @@ console.log(ninjas.size === 1)	//只剩下相同的元素ninja3
 const ninjas1 = ['ninja1-1', 'ninaj1-2', 'ninja3'];
 const ninjas2 = ['ninja2-1', 'ninaj2-2', 'ninja3'];
 
-cosnt ninjas = new Set(
+const ninjas = new Set(
 	[...ninja1].filter(ninja => !ninja2.has(ninja))
 );
 
 console.log(ninjas.size === 2)	//只剩下ninja1-1和ninja1-2
+
+
+//第九章
+//验证字符串
+function isCandidate(candidate) {
+	if(typeof candidate !== 'string' || candidate.length !== 10){
+		return false;
+	}
+	for(let n = 0; n < candidate.length; n ++) {
+		let c = candidate[n];
+		switch (n) {
+			case 0: case 1: case 2: case 3: case 4:
+			case 6: case 7: case 8: case 9:
+				if(c < '0' || c > '9') { return false };
+				break;
+			case 5:
+				if(c !== '-') return false;
+				break;
+		}
+	}
+	return true;
+}
+
+//正则匹配字符串
+function isCandidate(candidate) {
+	return /^\d{5}-\d{4}$/.test(candidate);
+}
+
+//编译regexp
+const re1 = /test/i;
+const re2 = new RegExp('test', 'i');
+
+console.log(re1.toString() === re2.toString())	//true
+
+
+//运行时编译一个供稍后使用的regexp
+<div class="ninja sama"></div>
+<div class="sama ninja"></div>
+<div></div>
+<span class="ninja sama vn"></span>
+
+function findClassInElements(className, type) {
+	const elems = document.getElementsByTagName(type || '*');	//根据标签类型查找
+	const regexp = new RegExp("(^|\\s)" + className + "(\\s|$)");	//使用传入的class编译正则
+	const results = [];		//存储最终结果
+	for(let i = 0, length = elems.length; i < length; i ++) {
+		if(regexp.test(elems[i].className)) {
+			results.push(elems[i]);
+		}
+	}
+	return results;
+}
+
+console.log(findClassInElements('ninja', 'div').length === 2)	//true
+console.log(findClassInElements('ninja').length === 3)	//true
+console.log(findClassInElements('ninja', 'span').length === 1) 	//true
+
+//简单捕获
+function getTranslateY(elem) {
+	const transformValue = elem.style.transform;
+	if(transformValue) {
+		const match = transformValue.match(/translateY\(([^\)]+)\)/);
+		return match ? match[1] : '';
+	}
+	return "";
+}
+
+const square = document.getElementsByClassName('className');
+
+console.log(getTranslateY(square) === '15px')
+//我们在元素的样式中定义15px的偏移量
+
+
+//全局匹配与局部匹配查找的区别
+const html = '<div class="test"><b>Hello</b><i>world</i></div>';
+const result = html.match(/<(\/?)(\w+)([^>]*?)>/);	//局部匹配
+
+console.log(result[0] === "<div class='test'>")
+console.log(result[1] === "")
+console.log(result[2] === "div")
+console.log(result[3] === " class='test'")
+
+const all = html.match(/<(\/?)(\w+)([^>]*?)>/g);	//全局匹配
+
+console.log(all[0] === "<div class='test'>")
+console.log(all[1] === "<b>")
+console.log(all[2] === "</b>")
+console.log(all[3] === "<i>")
+console.log(all[4] === "</i>")
+console.log(all[5] === "</div>")
+
+
+//exec
+const html = '<div class="test"><b>Hello</b><i>world</i></div>';
+const tag = /<(\/?)(\w+)([^>]*?)>/g;
+let match, num = 0;
+while ((match = tag.exec(html)) !== null) {
+	console.log(match.length === 4)
+	num ++;
+}
+console.log(num === 6)
+
+//反向引用匹配HTML标记的内容
+const html = '<b class="hello">Hello</b> <i>world!</i>';
+const pattern = /<(\w+)([^>]*)>(.*?)<\/\1>/g;	//反向引用
+let match = pattern.exec(html);	//对字符串执行模式匹配
+console.log(match[0] === "<b class='hello'>Hello</b>")
+console.log(match[1] === "b")
+console.log(match[2] === " class='hello'")
+console.log(match[3] === "Hello")
+
+match = pattern.exec(html);
+console.log(match[0] === "<i>world!</i>")
+console.log(match[1] === "i")
+console.log(match[2] === " ")
+console.log(match[3] === "world!")
+
+
+//a-b ==> aB
+function upper(all, letter) { return letter.toUpperCase() };
+console.log('ninjaa-ninjab-ninjac'.replace(/-(\w)/g, upper))
+//ninjaaNinjabNinjac
+
+//查询字符串压缩
+function compress(source) {
+	const keys = {};	//存储目标key
+	source.replace(
+		/([^=&]+)=([^&]*)/g,
+		function(full, key, value) {
+			keys[key] = (keys[key] ? keys[key] + ',' : "") + value;
+			return "";
+		}
+	);
+	const result = [];
+	for (let key in keys) {
+		result.push(key + "=" + keys[key]);
+	}
+	return result.join('&');	//使用&连接结果
+}
+
+//匹配所有字符，包括换行符
+const html = "<b>Hello</b>\n<i>world!</i>";
+console.log(/.*/.exec(html)[0] === "<b>Hello</b>");	//不匹配换行
+console.log(/[\S\s]*/.exec(html)[0] === "<b>Hello</b>\n<i>world!</i>")
+//使用空白字符匹配所有字符
+
+console.log(/(?:.|\s)*/.exec(html)[0] === "<b>Hello</b>\n<i>world!</i>")
+//也匹配所有字符
+
+//Unicode
+const text = "\u5FCD\u8005\u30D1\u30EF\u30FC";
+const matchAll = /[\w\u0080-\uFFFF_-]+/;	//匹配所有字符，包括Unicode
+console.log(text.match(matchAll))
+
+
+//CSS选择器中匹配转义字符
+const pattern = /^((\w+)|(\\.))+$/;
+//允许任意字符序列组成的词，包括一个反斜线紧跟任意字符（包括反斜线本身），或者两者兼有
+const tests = [
+	'formUpdate',
+	'form\\.update\\.whatever',
+	'form\\:update',
+	'\\f\\o\\r\\m\\u\\p\\d\\a\\t\\e',
+	'form:update'
+];
+for(let  n = 0; n < tests.length; n ++) {
+	console.log(pattern.test(tests[n]))
+}
