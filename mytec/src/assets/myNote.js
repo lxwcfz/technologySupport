@@ -1397,3 +1397,140 @@ const tests = [
 for(let  n = 0; n < tests.length; n ++) {
 	console.log(pattern.test(tests[n]))
 }
+
+
+//第十章
+//统计网页点击数量
+(function countClick() {
+	let count = 0;
+	document.addEventListener('click', () => {
+		console.log( ++count );
+	})
+})()
+
+//模块模式
+const MouseCounterModule = function() {	//创建一个全局模块变量，赋值为立即执行函数的执行结果
+	let count = 0;				//模块私有变量
+	const handleClick = () => {	//模块私有函数
+		console.log( ++count );
+	};
+
+	return {	//返回一个对象，代表模块接口，通过闭包，访问私有变量和方法
+		countClick: () => {
+			document.addEventListener('click', handleClick)
+		}
+	};
+}();
+
+//模块扩展
+const MouseCounterModule = function() {	//创建一个全局模块变量，赋值为立即执行函数的执行结果
+	let count = 0;				//模块私有变量
+	const handleClick = () => {	//模块私有函数
+		console.log( ++count );
+	};
+
+	return {	//返回一个对象，代表模块接口，通过闭包，访问私有变量和方法
+		countClick: () => {
+			document.addEventListener('click', handleClick)
+		}
+	};
+}();
+
+(function(module) {
+	let scroll = 0;
+	const handleScroll = () => {
+		console.log( ++scroll );
+	}
+
+	module.countScroll = () => {	//扩展模块接口
+		document.addEventListener('wheel', handleScroll)
+	};
+})(MouseCounterModule)				//将模块传入作为参数
+
+//使用AMD定义依赖于jQuery
+define('MouseCounterModule', ['jQuery'], $ => {
+	let count = 0;
+	const handleClick = () => {
+		console.log( ++count );
+	};
+
+	return {
+		countClick: () => {
+			$(document).on('click', handleClick);
+		}
+	};
+});
+
+//CommonJS
+//MouseCounterModule.js
+const $ = require('jQuery');	//同步引入jQuery
+let count = 0;
+const handleClick = () => {
+	console.log( ++count );
+};
+
+module.exports = {				//定义公共接口
+	countClick: () => {
+		$(document).on('click', handleClick);
+	}
+};
+
+//在另一个文件中引用该模块
+const MouseCounterModule = require('MouseCounterModule.js');
+MouseCounterModule.countClick();	//调用该模块方法
+
+
+//ES6导出模块
+const ninja = "Yoshi";	//顶级变量
+export const message = "hello";		//导出变量
+
+export function sayHiToNinja() {	//导出函数
+	return message + ' ' + ninja;
+}
+
+//最后一行导出
+//Ninja.js
+const ninja = "Yoshi";
+const message = "hello";
+
+function sayHiToNinja() {
+	return message + " " + ninja;
+}
+
+export { message, sayHiToNinja };
+
+//另一个文件
+import { message, sayHiToNinja } from "Ninja.js";
+
+//简便导入标识符
+import * as ninjaModule from "Ninja.js";
+console.log(ninjaModule.message === "hello");
+
+//默认导出
+export default class Ninja {	//默认导出这个类
+	constructor(name) {
+		this.name = name;
+	}
+}
+
+export function compareNinjas(ninja1, ninja2) {	//还可以导出其他内容
+	return ninja1.name === ninja2.name;
+}
+
+//简单导入
+import Ninja from "Ninja.js";	//导入模块默认导出的内容，可以任意指定名字
+import { compareNinjas } from "Ninja.js";	//导入指定内容
+
+const ninja1 = new Ninja('ninja1');		//创建实例
+const ninja2 = new Ninja('ninja2');
+
+console.log(ninja1 !== undefined && ninja2 !== undefined)
+
+//重命名导入导出内容
+function sayHi() {
+	return "hello";
+}
+
+export { sayHi as sayHello };		//导出后者
+
+import { sayHello as sayHelloToYou };	//可以访问后者

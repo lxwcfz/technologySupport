@@ -1755,6 +1755,195 @@ var partJS = [
 				title: '10.1ES6之前模块化代码',
 				content: [
 					{
+						text: `在JavaScriptES6之前，只有两种作用域：全局作用域和函数作用域。没有介于之间的作用域，
+						没有命名空间或模块可以将功能进行分组。为了编写模块化代码，开发者们不得不创造性使用现有的语法特性。
+						<br/>当决定使用哪个功能时，我们需要记住，每个模块系统至少应该可以执行以下操作：<br/>
+						${point}定义模块接口，通过接口可以调用模块功能；<br/>
+						${point}隐藏模块的内部实现，让使用者无需关注模块内部的实现细节，同时避免有可能产生的副作用和对bug
+						的不必要修改。`
+					},
+					{
+						text: `${blue}10.1.1对象、闭包和立即执行函数实现模块${endBlue}
+						我们可以利用JavaScript的哪些特性来实现上述模块的两个基本特点呢？<br/>
+						${point}隐藏模块内部实现——我们知道，调用函数创建新的作用域，我们可以在该作用域内定义变量，
+						此时定义的变量只在当前函数内可见。因此，隐藏模块内部实现的一个选择是${orange}使用函数作为模块
+						${endOrange}。<br/>
+						${point}定义模块接口——使用函数实现模块意味着只能在模块内部访问变量。但是，如果使用其他代码
+						调用该模块，我们必须定义简洁的接口，通过接口暴露模块提供的功能。一种实现的方法是：
+						${orange}对象和闭包${endOrange}。通过函数模块返回代表模块公共接口的对象，该对象必须包含
+						模块提供的方法，而这些方法通过闭包保持模块内部变量，甚至在函数执行完成后仍然保持。`
+					},
+					{
+						text: `${blue}使用函数作为模块${endBlue}
+						我们来看一个实现统计网页点击次数的例子：`,
+						src: require('@/assets/codeJS10.1.png')
+					},
+					{
+						text: `上述代码很容易理解，但是我们需要注意以下几点：<br/>
+						${point}变量count处于函数内部，在单击事件函数的闭包内活跃，该变量只能通过事件处理器调用，
+						这样就屏蔽了从函数外部访问count变量，同时我们没有污染全局变量空间；<br/>
+						${point}只有一处调用countClick函数，因此，与其定义函数再单独编写调用语句，不如使用
+						${orange}立即执行函数${endOrange}，或者使用IIFE(第2章讲过)，定义并立即执行该函数；<br/>
+						${point}事件处理器创建的闭包保持局部变量；<br/>
+						${point}浏览器具有单击事件处理器的引用。`
+					},
+					{
+						text: `${blue}模块模式：使用函数扩展模块，使用对象实现接口${endBlue}
+						模块接口通常包括一组变量和函数，创建接口最简单的方式是使用JavaScript对象，例如，
+						为统计页面点击次数模块创建接口：`,
+						src: require('@/assets/codeJS10.2.png')
+					},
+					{
+						text: `我们可以很容易的使用模块的功能：MouseCounterModule.countClick()。<br/>
+						这种通过立即执行函数、对象和闭包来创建模块的方式称为${orange}模块模式${endOrange}。
+						一旦我们有能力定义模块，就能够将模块拆分为多个文件（更容易管理），
+						或在已有模块上不修改原有代码就可以定义更多功能。`
+					},
+					{
+						text: `${blue}模块扩展${endBlue}
+						让我们在前面计算页面点击次数的示例模块MouseCounterModule中增加附加特性，
+						但是不能修改MouseCounterModule代码：`,
+						src: require('@/assets/codeJS10.3.png')
+					},
+					{
+						text: `现在模块上就有两个功能接口了：<br/>
+						MouseCouterModule.conutClick()<br/>
+						MouseCouterModule.countScroll()。`
+					},
+					{
+						text: `但是上述模块也有一些明显的缺点：通过模块扩展无法共享模块的私有变量：scroll、handleScroll,
+						countScroll函数创建的闭包无法访问click和handleClick。这个确定并不致命，仍然可以用模块模式
+						保持JavaScript的应用模块化。`
+					},
+					{
+						text: `在模块模式中，模块就像对象一样，我们采用任何合适的方式进行扩展，例如添加新属性：<br/>
+						module.newMethod = () => {...};<br/>
+						我们也可以使用相同的原则轻松创建子模块：<br/>
+						module.newSubmodule = () => { return {...}; }();<br/>
+						但同样的还是那个缺点，无法共享内部属性。糟糕的是，模块模式还有其他缺点：我们创建模块应用时，
+						模块本身常常依赖其他模块的功能，然而模块模式无法实现这些依赖关系，导致我们不得不考虑正确的
+						依赖顺序。`
+					},
+					{
+						text: `${blue}10.1.2——使用AMD和CommonJS模块化${endBlue}
+						为了解决上述问题，出现了两个相互竞争的标准：AMD和CommonJS，均可定义JavaScript模块。
+						除了原理和语法的区别之外，主要的区别是：${orange}AMD的设计理念是明确基于浏览器${endOrange},
+						而${orange}CommonJS的设计是面向通用JavaScript环境（如Node.js服务端）${endOrange}，
+						不局限于浏览器。`
+					},
+					{
+						text: `${blue}AMD${endBlue}
+						它很容易指定模块及依赖关系，同时它支持浏览器。目前AMD最流行的实现是${orange}RequireJS
+						${endOrange}。我们来看看如何定义依赖于jQuery的小模块`,
+						src: require('@/assets/codeJS10.4.png')
+					},
+					{
+						text: `AMD提供名为define的函数，它接收以下参数：<br/>
+						${point}新创建的模块ID，使用该ID，可以在其他部分引用该模块；<br/>
+						${point}当前模块依赖的模块ID列表；<br/>
+						${point}初始化模块的工厂函数，该工厂函数接收依赖的模块列表作为参数。<br/>
+						因为依赖于jQuery，所以AMD会先请求jQuery模块，如果从服务端请求，这个过程将会花费一些时间。
+						这个过程是异步执行的，避免发生阻塞。所有依赖的模块下载并解析以后，调用模块的工厂函数，
+						并传入依赖的模块，在工厂函数内部，和标准模块模式类似的创建模块的过程：创建暴露模块公共接口的对象。
+						可以看出AMD有以下几个优点：<br/>
+						${point}自动处理依赖，我们无需考虑模块引入的顺序；<br/>
+						${point}异步加载模块，避免阻塞；<br/>
+						${point}在同一个文件可以定义多个模块。`
+					},
+					{
+						text: `${blue}CommonJS${endBlue}
+						CommonJS的设计是面向通用JavaScript环境，它使用${orange}基于文件的模块${endOrange}，
+						所以每个文件中${orange}只能定义一个模块${endOrange}。CommonJS提供变量${orange}module
+						${endOrange},该变量具有属性${orange}exports${endOrange},通过expoers可以很容易扩展额外属性。
+						最后${orange}module.exports${endOrange}作为模块的公共接口。<br/>
+						如果希望在其他部分使用模块，那么可以引用模块。文件同步加载，可以访问模块公共接口。这是CommonJS
+						在服务端更流行的原因，${orange}模块加载更快${endOrange}，只需要读取文件系统，
+						而在客户端则必须从远程服务器下载文件，同步加载通常意味着阻塞。`,
+						src: require('@/assets/codeJS10.5.png')
+					},
+					{
+						text: `CommonJS要求一个文件就是一个模块，文件中代码就是模块的一部分。因此，
+						不需要使用立即执行函数来包装变量。在模块中定义的变量都是安全地包含在当前模块中，不会泄露到全局。
+						CommonJS具有两个${orange}优势${endOrange}：<br/>
+						${point}语法简单——只需定义module.exports属性，剩下的模块代码与标准JavaScript无差异，
+						引用模块也只需要用require函数；<br/>
+						${point}CommonJS是Node.js默认的模块格式——我们可以使用npm上成千上万的包。<br/>
+						CommonJS最大的缺点是不显式支持浏览器，浏览器端的JavaScript不支持module变量以及exports属性，
+						我们不得不采用浏览器支持的格式打包代码，可以通过${orange}Browserify或者RequireJS${endOrange}
+						来实现。`
+					}
+				]
+			},
+			{
+				title: '10.2ES6模块',
+				content: [
+					{
+						text: `ES6模块结合了AMD与CommonJS的优点，具体如下：<br/>
+						${point} 与CommonJS类似，ES6模块语法简单，并且基于文件（每个文件就是一个模块）；<br/>
+						${point} 与AMD类似，ES6模块支持异步加载模块。`
+					},
+					{
+						text: `注意：内置模块是ES6的标准的一部分，目前浏览器尚未支持ES6，我们需要对代码进行编译，使用
+						Traceur(<a href="https://github.com/google/traceur-compiler">
+						https://github.com/google/traceur-compiler</a>),Babel(<a href="http://babeljs.io">
+						http://babeljs.io</a>)或TypeScript(<a href="www.typescriptlang.org/">
+						www.typescriptlang.org/</a>)。`
+					},
+					{
+						text: `ES6模块的主要思想是必须显式地使用标识符导出模块，才能从外部访问模块。其他标识符，
+						甚至是最顶级作用域中定义地（可能是标准JavaScript中的全局作用域）标识符，只能在模块使用。
+						为了提供这个功能，ES6引入以下两个关键字：<br/>
+						${orange}export${endOrange}——从模块外部指定标识符；<br/>
+						${orange}import${endOrange}——导入模块标识符。`
+					},
+					{
+						text: `${blue}导出和导入功能${endBlue}`,
+						src: require('@/assets/codeJS10.6.png')
+					},
+					{
+						text: `我们一般在最后一行列出所有我们想要导出的内容，这种导出模块标识符的方式与模块模式有点相似，
+						直接函数地返回对象代表模块的公共接口，尤其是与CommonJS相似，我们通过公共模块接口扩展了
+						module.exports对象。无论我们如何导出模块，如果我们需要在另一个模块中导入，我们就必须使用关键字
+						import。`,
+						src: require('@/assets/codeJS10.7.png')
+					},
+					{
+						text: `我们可以使用export从一个模块导出多个标识符，但是在导入语句中依次罗列标识符显得冗余，
+						所以我们选择使用简化符号导入全部标识符，使用 * 符号导入全部标识符（导出的）并指明别名：`,
+						src: require('@/assets/codeJS10.8.png')
+					},
+					{
+						text: `${blue}默认导出${endBlue}
+						通常我们不需要从一个模块中导出一组相关的标识符，只需要一个标识符来代表整个模块的导出。
+						常见的情况是，模块中包含一个类：`,
+						src: require('@/assets/codeJS10.9.png')
+					},
+					{
+						text: `我们可以使用简单的语法导入模块的功能：`,
+						src: require('@/assets/codeJS10.10.png')
+					},
+					{
+						text: `导入默认导出的内容不需要花括号，导入已命名的导出内容必须要花括号，同时，
+						ES6还可以只使用一个import语句导入内容（用逗号连接）。`
+					},
+					{
+						text: `${blue}export 和 import使用重命名${endBlue}
+						可以通过${orange}as${endOrange}设置导出（或导入）别名，而另一个文件中只能导入该别名
+						（或只能访问导入的内容的别名）`,
+						src: require('@/assets/codeJS10.11.png')
+					}
+				]
+			}
+		]
+	},
+	//第十一章
+	{
+		mainTitle: '11、DOM操作',
+		content: [
+			{
+				title: '11.1向DOM中注入HTML',
+				content: [
+					{
 						text: ``
 					}
 				]
