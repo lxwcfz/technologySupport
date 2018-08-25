@@ -1944,6 +1944,153 @@ var partJS = [
 				title: '11.1向DOM中注入HTML',
 				content: [
 					{
+						text: `这一张我们来看一下如何高效地将一段HTML字符串插入到文档中的任意位置，该技术经常被用来开发
+						高度动态的网页，或是根据用户操作或者服务端返回数据，来修改UI展现，主要出现在以下场景：<br/>
+						${point}在页面中插入任意HTML时以及操作并插入客户端模板时；<br/>
+						${point}拉取并注入从服务器返回的HTML时。<br/>
+						我们来看一个例子：`,
+						src: require('@/assets/codeJS11.1.png')
+					},
+					{
+						text: `我们要从头实现一套简洁的DOM操作方式，具体步骤如下：<br/>
+						${point}将任意有效的HTML字符串转换为DOM结构；<br/>
+						${point}尽可能高效地将DOM结构注入到任意位置。`
+					},
+					{
+						text: `${blue}将HTML字符串转换为DOM${endBlue}
+						它主要用到一个大家都很熟悉的工具：${orange}innerHTML属性${endOrange}。转换步骤如下:<br/>
+						${point}确保HTML字符串合法有效；<br/>
+						${point}将它包裹在任意符合浏览器规则要求的闭合标签内；<br/>
+						${point}使用innerHTML将这串HTML插入到一个需求DOM中；<br/>
+						${point}提取该DOM节点。<br/>
+						我们插入节点一般采用的方法有${orange}append和insertBefore${endOrange}。`
+					}
+				]
+			},
+			{
+				title: '11.2DOM的特性属性',
+				content: [
+					{
+						text: `当访问元素的特性值时，我们有两种选择，使用传统的DOM方法${orange}getAttribute和
+						setAttribute${endOrange}，或使用DOM对象上与之相对应的属性。举例来说，一个元素储存在变量e中，
+						要获取其id值，我们可以使用：<br/>
+						${point}e.getAttribute('id');<br/>
+						${point}e.id。<br/>
+						无论采用哪种方式，我们都能获取到元素id值，让我们继续理解特性值和属性之间的行为：`,
+						src: require('@/assets/codeJS11.2.png')
+					},
+					{
+						text: `我们很容易会认为属性和特性值共享一个相同的值，其实并没有。请注意：
+						${orange}并非所有的元素特性都能被属性表示${endOrange}。虽然HTML DOM的原生特性，通常都能被
+						属性表示，但是我们放置的自定义特性（建议标签内使用‘data-’作为前缀添加）并不能被属性表示。
+						这个时候我们就需要用getAttribute来获取。`
+					}
+				]
+			},
+			{
+				title: "11.3令人头疼的样式特性",
+				content: [
+					{
+						text: `我们采用两种方式来处理style值：特性值，以及从特性值中创建的元素属性。<br/>
+						最常用的是style元素属性，它不是字符串，而是一个对象，该对象的属性与元素标签内指定的样式对应。
+						此外，我们介绍一下可以访问元素所有计算后的样式信息的API。该计算样式是对所有集成样式和
+						应用样式求值以后，在该元素上应用的实际样式。`
+					},
+					{
+						text: `${blue}11.3.1——样式在何处${endBlue}
+						元素的样式信息位于DOM元素中的style属性上，初始值是在元素的style特性上设置的，如（
+						style = "color: red;"），将会把该样式信息保存在样式对象中。在页面执行期间，
+						脚本可以设置或修改样式对象中的值。但是在JavaScript中获取元素样式对象的时候，无法获取到
+						页面上style元素之外的样式值（css文件中的），但是我们可以通过一种方式来获取完整的样式属性。
+						元素的style属性中的任何值，都优先于样式表中设置的值（即便是添加了!important的注释）`
+					},
+					{
+						text: `${blue}11.3.2——样式属性命名${endBlue}
+						用CSS特性跨浏览器访问样式时，出现的兼容问题很少，但是CSS样式名称和脚本中使用的名称之间的差异
+						确实是存在的，并且有些样式名称在不同的浏览器中还不一样。`
+					},
+					{
+						text: `CSS特性将多余一个单词的样式用-连接，如font-size、font-weight。在JavaScript中，
+						可以使用带有连字符的样式名称（element.style['font-size']），如果需要用点运算符来获取，
+						则要使用驼峰格式名称（element.style.fontSize）。`
+					},
+					{
+						text: `${blue}11.3.3——获取计算后样式${endBlue}
+						在任何时候，一个元素的计算后样式都是应用在该元素上的所有样式的组合，这些样式包括CSS文件、
+						元素的style特性，以及脚本对style做的各种操作。所有现代浏览器实现的标准方法是
+						${orange}getComputedStyle${endOrange}。该方法接收要计算其样式的元素，并返回一个接口，
+						通过该接口可进行属性查询。返回的接口提供一个名为${orange}getPropertyValue${endOrange}方法，
+						用于检索特定样式属性的计算风格。与元素样式对象不同，getPropertyValue方法接收CSS属性名称，
+						而不是驼峰版本。我们来看一个例子：`,
+						src: require('@/assets/codeJS11.3.png')
+					},
+					{
+						text: `上述例子考虑了样式格式，驼峰和连字符组成的都可以，创建了一个可复用的获取样式属性的接口。`
+					},
+					{
+						text: `${blue}11.3.4——转换像素值${endBlue}
+						设置样式时，需要考虑另外一个问题，如何给表示像素的结果赋值。为样式属性设置数值时，
+						我们必须指定单位，以其在所有的浏览器中可以有效的运行。在尝试获取style特性的像素值时，应该使用
+						parseFloat方法进行转换操作。`
+					},
+					{
+						text: `${blue}11.3.5——测量元素的高度和宽度${endBlue}
+						height和width这样的属性值造成了另一种特殊问题，在不指定值的情况下，他们的默认值是auto，
+						让元素大小自适应，因此，除非显式提供特性字符串，我们是不可能使用width和height获取到准取值的。
+						但是${orange}offsetWidth和offsetheight${endOrange}提供了这样的功能：<br/>
+						可以相当可靠地获取实际元素的宽高，（这两个属性都包含了元素的${orange}padding${endOrange}）。
+						如果我们想将一个元素相对于另一个元素定位，这些信息是有用的，但有些时候，我们想要获取元素尺寸，
+						可能不包括border和padding。`
+					},
+					{
+						text: `<strong>注意：</strong>在高度交互的网站中，元素隐藏（display设置为none）以后，
+						它就没有尺寸，在非显式元素上尝试获取offsetHeight或offsetWidth都是0。
+						对于这样的隐藏元素，如果非要获取它的尺寸，我们可以将其先显示再获取值，再隐藏，这样要不出现
+						破绽的话，应该这样来实现：<br/>
+						${point}display: block;<br/>
+						${point}visibility: hidden;<br/>
+						${point}position: absolute;<br/>
+						${point}获取元素尺寸；<br/>
+						${point}恢复先前更改的属性。`
+					}
+				]
+			},
+			{
+				title: '11.4避免布局抖动',
+				content: [
+					{
+						text: `修改DOM是实现高度动态web应用的基础工具之一，但是这个工具有一定的副作用，最重要的一个
+						就是布局抖动。当我们对DOM进行一系列读写操作时，布局就会抖动，而此过程浏览器是无法进行优化的。
+						核心问题在于，每当我们修改DOM，浏览器就必须在读取任何布局信息之前先重新计算布局，
+						这种对性能的损耗十分巨大。避免布局抖动的一种方法是不使用会导致浏览器${orange}重排${endOrange}
+						的方式进行编码。`,
+						src: require('@/assets/codeJS11.4.png')
+					},
+					{
+						text: `这里我们批量读取和写入，因为我们知道元素的尺寸之间不存在依赖关系（设置ninja的高度，
+						不会影响sama的高度），这样可以让浏览器进行批量修改DOM的操作。`
+					},
+					{
+						text: `我们在一些复杂的页面应用或者是移动端设备上，一定要特别注意会引起布局抖动的方法和属性。`,
+						src: require('@/assets/codeJS11.5.png')
+					},
+					{
+						text: `已经有很多第三方库会尽量减少布局抖动，最受欢迎的是FastDom
+						(<a href="https://github.com/wilsonpage/fastdom">
+						https://github.com/wilsonpage/fastdom</a>)。感兴趣的同学可以去看一下。`
+					}
+				]
+			}
+		]
+	},
+	//第十二章
+	{
+		mainTitle: '12、历久弥新的事件',
+		content: [
+			{
+				title: '12.1深入事件循环',
+				content: [
+					{
 						text: ``
 					}
 				]

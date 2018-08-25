@@ -1534,3 +1534,59 @@ function sayHi() {
 export { sayHi as sayHello };		//导出后者
 
 import { sayHello as sayHelloToYou };	//可以访问后者
+
+
+//第十一章
+//插入HTML元素
+$(document.body).append("<div><h1>Greeting</h1><p>Yoshi here</p></div>");
+//通过jQuery实现
+
+//通过原生实现
+const h1 = document.createElement("h1");
+h1.textContent = "Greeting";
+
+const p = document.createElement("p");
+p.textContent = "Yoshi here";
+
+const div = document.createElement("div");
+
+div.appendChild(h1);
+div.appendChild(p);
+
+document.body.appendChild(div)
+
+//通过DOM方法和属性访问特性值
+document.addEventListener('DOMContentLoaded', () => {
+	const div = document.querySlector('div');
+	div.setAttribute('id', 'ninja-1');
+	console.log(div.getAttribute('id') === 'ninja-1')
+	div.id = 'ninja-2';
+	console.log(div.id === "ninja-2" && div.getAttribute('id'));
+})
+
+//获取计算后样式
+function fetchComputedStyle(element, property) {
+	const computedStyles = getComputedStyle(element);
+	if(computedStyles) {
+		property = property.replace(/([A-Z])/g, '-$1').toLowerCase();
+		return computedStyles.getPropertyValue(property);
+	}
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+	const div = document.querySlector('div');
+	console.log(fetchComputedStyle(div, 'background-color'))
+})
+
+//避免布局抖动
+const ninja = document.getElementsByClassName('ninja')[0];
+const sama = document.getElementsByClassName('sama')[0];
+const Yoshi = document.getElementsByClassName('Yoshi')[0];
+
+const ninjaWidth = ninja.clientWidth;	//批量读取所有布局属性
+const samaWidth = sama.clientWidth;
+const YoshiWidth = Yoshi.clientWidth;
+
+ninja.style.width = ninjaWidth/2 + 'px';	//批量写入布局属性
+sama.style.width = samaWidth/2 + 'px';
+Yoshi.style.width = YoshiWidth/2 + 'px';
