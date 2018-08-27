@@ -1590,3 +1590,160 @@ const YoshiWidth = Yoshi.clientWidth;
 ninja.style.width = ninjaWidth/2 + 'px';	//批量写入布局属性
 sama.style.width = samaWidth/2 + 'px';
 Yoshi.style.width = YoshiWidth/2 + 'px';
+
+//第十二章
+//单一任务队列示例的伪代码
+<button id="firstButton"></button>
+<button id="secondButton"></button>
+
+const firstButton = document.getElementById('firstButton');
+const secondButton = document.getElementById('secondButton');
+firstButton.addEventListener('click', function firstHandle() {
+	//
+});
+secondButton.addEventListener('click', function secondHandle() {
+	//
+})
+
+//定时器
+<button id="button"></button>
+
+const button = document.getElementById('button');
+setTimeout(function timeoutHandle() {
+	//
+},10);
+
+setInterval(function intervalHandle() {
+	//
+},10);
+
+button.addEventListener('click', function clickHandle() {
+	//
+})
+
+//延迟执行和间隔执行区别
+setTimeout(function repeatMe() {
+	//
+	setTimeout(repeatMe, 10);
+}, 10);
+
+setInterval( () => {
+	//
+}, 10)
+
+//长时间执行的例子
+const tbody = document.querySlector('tbody');	
+for(let i = 0; i < 20000; i ++) {
+	const tr = document.createElement('tr');
+	for(let t = 0; t < 6; t ++) {
+		const td = document.createElement('td');
+		td.appendChild(document.createTextNode(i + "," + t));
+		tr.appendChild(td);
+	}
+	tbody.appendChild(tr);
+}
+
+//计时器中断一个长时间运行的任务
+const rowCount = 20000;
+const divideInfo = 4;
+const chunkSize = rowCount / divideInfo;
+let interation = 0;
+const table = document.getElementsByTagName('tbody')[0];
+setTimeout(function generateRows() {
+	const base = chunkSize * interation;	//计算上一次离开的时间
+	for(let i = 0; i < chunkSize; i ++) {
+		const tr = document.createElement('tr');
+		for(let t = 0; t < 6; t ++) {
+			const td = document.createElement('td');
+			td.appendChild(document.createTextNode((i + bass) + "," + t + "," + interation));
+			tr.appendChild(td);
+		}
+		table.appendChild(tr);
+	}
+	interation ++;
+	if(interation < divideInfo) { setTimeout(generateRows, 0); }
+}, 0);		//将延迟设为0，表示迭代应该尽快执行，但还是会在UI更新以后执行。
+
+//嵌套元素和单机处理器
+<div class="out">
+	<div class="in"></div>
+</div>
+
+const outer = document.getElementsByClassName('out')[0];
+const inner = document.getElementsByClassName('in')[0];
+
+outer.addEventListener('click', () => {
+	console.log('out')
+});
+
+inner.addEventListener('click', () => {
+	console.log('in')
+});
+
+document.addEventListener('click', () => {
+	console.log('document')
+});
+
+//祖先元素代理事件
+const table = document.getElementsByTagName('table')[0];
+table.addEventListener('click', event => {
+	if(event.target.tagName.toLowerCase() === 'td')	{//不是随机的后代元素
+		event.target.style.backgroundColor = 'yellow';
+	}
+})
+
+//创建使用自定义事件
+<button>start</button>
+<img id="img" src="aaa.gif" />
+
+function triggerEvent(target, eventType, eventDetail) {
+	const event = new CustomEvent(eventType, {	//使用CustomEvent创建新事件
+		detail: eventDetail
+	});
+	target.dispatchEvent(event);	//内置dispatchEvent解除事件绑定
+}
+
+function performAjaxOperation() {
+	triggerEvent(document, 'Ajax-start', {url: 'my-url'});
+	setTimeout(() => {
+		triggerEvent(document, 'Ajax-end')
+	}, 5000)
+}
+
+const button = document.getElementsByTagName('button')[0];
+button.addEventListener('click', () => {
+	performAjaxOperation();
+});
+
+document.addEventListener('Ajax-start', e => {
+	document.getElementById('img').style.display = "inline-block";
+	console.log(e.target.url === 'my-url')
+});
+document.addEventListener('Ajax-end', e => {
+	document.getElementById('img').style.display = "none";
+})
+
+//第十三章
+//Array.prototype.find方法的垫片
+if(!Array.prototype.find) {
+	Array.prototype.find = function(predicate) {
+		if(this === null) {
+			throw new TypeError('find null or undefined');
+		}
+		if(typeof predicate !== 'function') {
+			throw new TypeError('predicate must be a function');
+		}
+	}
+	var list = Object(this)
+	var length = list.length >>> 0;
+	var thisArg = arguments[1];
+	var value;
+
+	for(var i = 0; i < length; i++) {
+		value = list[i];
+		if(predicate.call(thisArg, value, i, list)) {
+			return value;
+		}
+	}
+	return undefined;
+}
