@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="index">
         <!--导航栏-->
         <Navigater @toNav="toNav" />
         <!--标题栏-->
@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import Navigater from '@/components/Navigater';
-import Aside from '@/components/Aside';
-import Content from '@/components/Content';
-import Footer from '@/components/Footer';
-import commonJS from '../assets/commonJS/commonJS.js';
+import Navigater from '@/components/contentPage/Navigater';
+import Aside from '@/components/contentPage/Aside';
+import Content from '@/components/contentPage/Content';
+import Footer from '@/components/contentPage/Footer';
+import commonJS from '../../assets/commonJS/commonJS.js';
 
 
 export default {
@@ -31,7 +31,8 @@ export default {
         Footer: Footer
     },
     created() {
-        // console.log(this.$store.state)
+        this.mountNowNum();
+        this.updateContent();
     },
     mounted() {
         window.addEventListener('scroll', this.windowScroll);

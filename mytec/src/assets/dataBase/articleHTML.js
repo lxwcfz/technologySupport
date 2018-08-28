@@ -1,35 +1,12 @@
 var partHTML = [
 	{
-		mainTitle: '页面构建过程',
+		mainTitle: '...未更新',
 		content: [
 			{
-				title: '生命周期',
+				title: '',
 				content: [
 					{
-						text: '什么是生命周期',
-						src: require('@/assets/module.png')
-					},
-					{
-						text: '这个是生命周期',
-						src: require('@/assets/codeJS1.1.png')
-					}
-				]
-			},
-			{
-				title: '页面构建',
-				content: [
-					{
-						text: '什么是生命周期',
-						src: ''
-					}
-				]
-			},
-			{
-				title: '事件处理',
-				content: [
-					{
-						text: '什么是生命周期',
-						src: ''
+						text: ''
 					}
 				]
 			}

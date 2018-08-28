@@ -1,13 +1,13 @@
 <template>
     <aside class="aside" id="aside">
     	<NavRight @toNav="toNav"/>
-		<ArticleTitle @toNowTitle="toNowTitle" @toNowMainTitle="toNowMainTitle" :partJS="articles" :articleNum="articleNum"/>
+		<ArticleTitle v-if="articles == '' ? false : true" @toNowTitle="toNowTitle" @toNowMainTitle="toNowMainTitle" :partJS="articles" :articleNum="articleNum"/>
 	</aside>
 </template>
 
 <script>
-import NavRight from '@/components/NavRight';
-import ArticleTitle from '@/components/ArticleTitle';
+import NavRight from '@/components/contentPage/NavRight';
+import ArticleTitle from '@/components/contentPage/ArticleTitle';
 
 export default {
     name: 'Aside',

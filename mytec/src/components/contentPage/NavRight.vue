@@ -35,6 +35,16 @@ export default {
                     text: 'JavaScript'
                 },
                 {
+                    id: 'nodejsPage',
+                    address: '/index/nodejs/0',
+                    text: 'Node.js'
+                },
+                {
+                    id: 'questionPage',
+                    address: '/index/question/0',
+                    text: '常见问题'
+                },
+                {
                     id: 'myGithub',
                     address: 'https://www.github.com/lxwcfz',
                     text: 'github'
@@ -64,12 +74,6 @@ export default {
 
 .nav_right{
     float: right;
-}
-
-@media screen and (min-width: 900px){
-    .nav_right{
-        margin-right: 100px;
-    }
 }
 
 @media screen and (max-width: 800px) and (min-width: 0px) {

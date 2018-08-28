@@ -1,11 +1,11 @@
 <template>
     <nav>
         <div class="nav_left">
-            <img class="logo" src="../assets/logo.png">
+            <img class="logo" src="../../assets/materialImg/logo.png">
             <span>{{ title }}</span>
             <span class="desc">{{ desc }}</span>
             <button @click="showAside()" class="btn_showAside">
-                <img src="../assets/btn_showTab.png">
+                <img src="../../assets/materialImg/btn_showTab.png">
             </button>
         </div>
         <NavRight @toNav="toNav"/>
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import NavRight from '@/components/NavRight';
+import NavRight from '@/components/contentPage/NavRight';
 
 export default {
     name: 'Navigater',
@@ -93,9 +93,15 @@ nav{
     height: 50%;
 }
 
-@media screen and (min-width: 900px){
+@media screen and (min-width: 1200px) {
     .nav_right{
-        margin-right: 100px;
+        margin-right: 50px;
+    }
+}
+
+@media screen and (max-width: 1000px){
+    .desc{
+        display: none;
     }
 }
 

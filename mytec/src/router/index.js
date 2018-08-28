@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Index from '@/components/Index';
+import Index from '@/components/contentPage/Index';
+import IndexPage from '@/components/indexPage/IndexPage';
 
 Vue.use(Router);
 
@@ -8,11 +9,12 @@ export default new Router({
 	routes: [
 		{
 			path: '/',
-			redirect: '/index/js/0'
+			name: IndexPage,
+			component: IndexPage
 		},
 		{
 			path: '/index/:nowMainTitle',
-			props: (route) => ({
+			props: route => ({
 				nowMainTitle: route.params.nowMainTitle
 			}),
 			name: 'Index',
@@ -20,7 +22,7 @@ export default new Router({
 			children: [
 				{
 					path: '/index/html/:nowMainTitle',
-					props: (route) => ({
+					props: route => ({
 						nowMainTitle: route.params.nowMainTitle
 					}),
 					name: 'html',
@@ -28,7 +30,7 @@ export default new Router({
 				},
 				{
 					path: '/index/css/:nowMainTitle',
-					props: (route) => ({
+					props: route => ({
 						nowMainTitle: route.params.nowMainTitle
 					}),
 					name: 'css',
@@ -36,10 +38,26 @@ export default new Router({
 				},
 				{
 					path: '/index/js/:nowMainTitle',
-					props: (route) => ({
+					props: route => ({
 						nowMainTitle: route.params.nowMainTitle
 					}),
 					name: 'js',
+					component: Index
+				},
+				{
+					path: '/index/nodejs/:nowMainTitle',
+					props: route => ({
+						nowMainTitle: route.params.nowMainTitle
+					}),
+					name: 'nodejs',
+					component: Index
+				},
+				{
+					path: '/index/question/:nowMainTitle',
+					props: route => ({
+						nowMainTitle: route.params.nowMainTitle
+					}),
+					name: 'question',
 					component: Index
 				}
 			]
