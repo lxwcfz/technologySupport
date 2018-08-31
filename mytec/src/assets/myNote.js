@@ -1747,3 +1747,40 @@ if(!Array.prototype.find) {
 	}
 	return undefined;
 }
+
+
+//Nodejs
+//第一章
+
+//node.js构建Web程序
+var http = require('http');
+
+http.createServer((req, res) => {
+	res.end('hello world');
+}).listen(8080, '127.0.0.1');
+
+//global
+var foo = "bar";
+global.foo = foo;	//创建全局变量
+console.log('global: foo' + global.foo);	//global: foo bar
+
+
+//exports和module.exports的区别
+//在test.js文件中
+module.exports = ['a', 'b', 'c'];
+
+//main.js文件中
+var myModule = require('./test');
+console.log(myModule.length, myModule);//3 ['a', 'b', 'c']
+
+//test.js文件中
+exports = ['a', 'b', 'c'];
+
+//main.js文件中
+var myModule = require('./test');
+console.log(myModule.length, myModule);//undefined {}
+
+//加载核心模块
+var os = require('os');	//输入错误模块名称则无效
+console.log(os.cpu())	//输出CPU信息
+
