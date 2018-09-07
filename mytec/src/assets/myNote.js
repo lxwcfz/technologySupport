@@ -1784,3 +1784,21 @@ console.log(myModule.length, myModule);//undefined {}
 var os = require('os');	//输入错误模块名称则无效
 console.log(os.cpu())	//输出CPU信息
 
+//第三章
+//异步实现
+console.log('起床')；
+console.log('背单词');
+function eatBreakfast() {
+	console.log('开始吃早餐啦');
+	setTimeout(function() {
+		console.log('早餐吃完了');
+	}, 0);	//这样不会阻塞后面代码执行
+};
+eatBreakfast();
+console.log('去上学')；
+
+//最后结果:
+//起床
+//开始吃早餐啦
+//去上学
+//吃完早餐了

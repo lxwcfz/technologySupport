@@ -228,6 +228,96 @@ var Nodejs = [
 				title: '3.1异步编程',
 				content: [
 					{
+						text: `${blue}3.1.1——同步和异步${endBlue}
+						我们先看一个同步的例子：小明每天起床要吃早餐、背单词然后去上学，如果每件事按照顺序依次进行就是同步。
+						过程就是：<br/>
+						起床->背单词->吃早餐->去上学。<br/>
+						同步代码中${orange}每行代码按顺序执行${endOrange}。<br/>
+						而异步的过程就是：<br/>
+						起床->背单词->边吃早餐边去上学。<br/>我们看下具体步骤：`,
+						src: require('@/assets/codeNodejs3.1.png')
+					},
+					{
+						text: `${blue}3.1.2——回调函数${endBlue}
+						回调函数是指函数可以作为函数参数传递到另一个函数中去，然后被调用的形式，在Node.js中非常常用，
+						典型的应用就是异步函数的异常处理。回调函数的设计中有三个约定：<br/>
+						${point}函数名称通常是callback，在封装异步执行代码时，优先吧回调函数作为函数的最后一个参数出现。
+						<br/>${point}把代码中的错误作为callback的第一个参数进行传递；<br/>
+						${point}把真正返回的结果作为callback的第二个参数。<br/>
+						${orange}注意：回调函数在站内JavaScript分栏中也有详细介绍。${endOrange}`
+					}
+				]
+			},
+			{
+				title: '3.2Node.js的包和NPM',
+				content: [
+					{
+						text: `Node.js中，会将某个独立的功能封装起来，用于发布、更新、依赖管理和进行版本控制。Node.js
+						根据CommonJS规范实现了包机制，开发了NPM包管理工具，用来解决包的发布和获取需求。`
+					},
+					{
+						text: `${blue}3.2.1——包的概念${endBlue}
+						包和模块并没有本质的区别，包是在模块的基础上更进一步的组织JavaScript代码的目录。下面我们来看一下
+						包和模块的关系：`,
+						src: require('@/assets/codeNodejs3.2.png')
+					},
+					{
+						text: `一个包中应该有一个出口模块，用于向外部开放接口，使用者只需要拿到出口模块，而不用关心包中
+						其他内容。`
+					},
+					{
+						text: `Node.js的包遵循CommonJS规范，目录结构如下：<br/>
+						${orange}package.json${endOrange}：在顶层目录的包描述文件，说明文件<br/>
+						${orange}bin${endOrange}：存放可执行二进制文件的目录<br/>
+						${orange}lib${endOrange}：存放JavaScript文件的目录<br/>
+						${orange}doc${endOrange}存放文件的目录<br/>
+						${orange}test${endOrange}存放单元测试的目录<br/>`
+					},
+					{
+						text: `${blue}3.2.2——NPM的概念${endBlue}
+						在Node.js中有两种含义：一种含义是Node.js的开放模块登记和管理系统，是一个NPM网站，
+						网址为：<a href="https://www.npmjs.com">https://www.npmjs.com</a>，该网站是全球最大的模块生态系统，
+						所有包都通过Node.js实现，开源免费。<br/>
+						另一个概念就是Node.js的包管理工具，一个命令行下的软件，提供一些命令用于快速安装和管理模块。常用命令有：<br/>
+						${orange}npm init [-y]${endOrange}：初始化一个package.json文件<br/>
+						${orange}npm install 包名${endOrange}：安装一个包<br/>
+						${orange}npm install -save 包名${endOrange}：将安装的包添加到package.json的依赖中<br/>
+						${orange}npm install -g 包名${endOrange}：安装一个命令行工具<br/>
+						${orange}npm docs 包名${endOrange}：查看包的文档（很有用）<br/>
+						${orange}npm root -g${endOrange}：查看全局包安装路径<br/>
+						${orange}npm config set prefix "路径"${endOrange}：修改全局包安装路径<br/>
+						${orange}npm list${endOrange}：查看当前目录下安装的所有包<br/>
+						${orange}npm list -g${endOrange}：查看全局包的安装路径下所有的包<br/>
+						${orange}npm uninstall 包名${endOrange}：卸载当前目录下的某个包<br/>
+						${orange}npm uninstall -g 包名${endOrange}：卸载全局安装路径下的某个包<br/>
+						${orange}npm update 包名${endOrange}更新当前目录下的某个包<br/>`
+					},
+					{
+						text: `在Node.js中，node_modules目录是用于专门放置第三方包的，目录名和其中的内容都不可以修改。`
+					},
+					{
+						text: `${blue}3.2.3——包模块加载规则${endBlue}
+						在第2章中介绍过require()的加载规则，了解了核心模块和文件模块，在require()的加载规则中还有
+						一个特殊的文件模块，叫作包模块。包模块既不是文件模块标识，也不是核心模块标识，也就是说当需要加载的模块名既不是路径，
+						也不是内置模块名称时，就是包模块的名称。<br/>
+						包模块的加载规则如下：<br/>
+						${point}Node.js会默认把它当作核心模块去加载，如果标识不是核心模块，就会在当前目录的node_modules
+						目录下寻找。如果没找到，Node.js会从当前目录的父目录的node_modules里面搜索，递归下去直到根目录。<br/>
+						${point}如果找到了该标识名的子目录，Node.js将会找到该子目录下的package.json文件，获取该文件的main属性
+						的值，根据main属性指定的路径值进行加载。这样做的好处是在用户使用第三方模块的时候，不用关心入口模块是哪个文件。`
+					}
+				]
+			}
+		]
+	},
+	//第四章
+	{
+		mainTitle: '4、文件操作',
+		content: [
+			{
+				title: '4.1基本文件操作',
+				content: [
+					{
 						text: ``
 					}
 				]
