@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>lxw聊天室</title>
+</head>
+<body>
+	<h1>lxw Chatting Room</h1>
+	<textarea class="text" cols="30" rows="10"></textarea>
+	<button class="btn">发送</button>
+	<script type="text/javascript" src="http://wulv5.com/js/socket.io.min.js"></script>
+	<script type="text/javascript">
+		var socket = io.connect('/');
+		var btn = document.getElementsByClassName('btn')[0];
+		var text = document.getElementsByClassName('text')[0];
+		function updateText(t) {
+			let p = document.createElement('p');
+			p.innerHTML = t;
+			document.body.appendChild(p);
+		}
+		btn.onclick = function() {
+			let txt = text.value;
+			if(!txt) { 
+				alert('消息为空');
+				return;
+			};
+			socket.send(txt);
+			text.value = "";
+		};
+		socket.on('message', data => {
+			updateText(data);
+		});
+	</script>
+</body>
+
+</html>
