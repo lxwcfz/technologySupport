@@ -146,4 +146,11 @@ import Title from '@/components/Title';
         padding: 10px 30px;
         margin: 20px;
     }
+
+    @media screen and (max-width: 750px) {
+        .world .auto{
+            width: auto;
+            height: auto;
+        }
+    }
 </style>
