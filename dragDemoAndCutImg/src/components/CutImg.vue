@@ -11,7 +11,7 @@
                 <div class="final_img">
                     <img :src="url" class="target">
                 </div>
-                <button @click="alert('保存成功！')">保存</button>
+                <button onclick="alert('保存成功！')">保存</button>
             </div>
         </div>
     </div>
