@@ -11,7 +11,7 @@
                 <div class="final_img">
                     <img :src="url" class="target">
                 </div>
-                <button onclick="alert('保存成功！')">保存</button>
+                <button @click="save">保存</button>
             </div>
         </div>
     </div>
@@ -71,6 +71,9 @@ import Title from '@/components/Title';
                 mark.style.left = left + 'px';
                 mark.style.top = top + 'px';
                 target.style.transform = `translateX(${-left}px) translateY(${-top}px)`;
+            },
+            save() {
+                alert('保存成功')
             }
         }
     }
